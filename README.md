@@ -1,7 +1,11 @@
-# Halftone client starter
+# Halftone client starter · Marketing / brochure tier
 
-A clean Next.js 16 + Tailwind v4 + TypeScript starting point for Halftone client
-sites. Brandable from two files, deploy-ready on Vercel.
+The **quick, low-effort** tier: a clean Next.js 16 + Tailwind v4 + TypeScript
+brochure site for a business that needs a credible presence fast. Mostly static,
+brandable from two files, deploy-ready on Vercel.
+
+For local service businesses that need a service menu, booking/inquiry flow, gallery,
+and reviews (med spas, salons, clinics), use the **local-service** starter instead.
 
 ## Start a new client (5 minutes)
 
