@@ -1,0 +1,136 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Design tokens — REBRAND HERE for each client.
+   Change the hex values below; components read the tokens, so a
+   whole site re-themes from this one block.
+   ============================================================ */
+
+:root {
+  /* Base ramp (light) */
+  --bg: #ffffff;
+  --bg-elev: #f6f6f4;
+  --surface: #f0f0ee;
+  --line: #e3e3df;
+  --fg: #16161a;
+  --fg-muted: #55555f;
+  --fg-faint: #8a8a94;
+
+  /* Accent — the one brand color */
+  --accent: #4f46e5;
+  --accent-light: #6d64f0;
+  --accent-dark: #3b32c4;
+  --on-accent: #ffffff;
+
+  /* Motion + safe areas */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --safe-t: env(safe-area-inset-top, 0px);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0b0b0d;
+    --bg-elev: #131316;
+    --surface: #191920;
+    --line: #26262e;
+    --fg: #f4f4f6;
+    --fg-muted: #a0a0aa;
+    --fg-faint: #63636e;
+    --accent: #7c74ff;
+    --accent-light: #9b95ff;
+    --accent-dark: #5b52e8;
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-elev: var(--bg-elev);
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-faint: var(--fg-faint);
+  --color-accent: var(--accent);
+  --color-accent-light: var(--accent-light);
+  --color-accent-dark: var(--accent-dark);
+  --color-on-accent: var(--on-accent);
+
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
+}
+
+* {
+  border-color: var(--line);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+/* Small shared helpers */
+.display {
+  font-family: var(--font-display), var(--font-sans), sans-serif;
+  letter-spacing: -0.02em;
+}
+.eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+.container-page {
+  width: 100%;
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+@media (min-width: 640px) {
+  .container-page {
+    padding-inline: 2rem;
+  }
+}
+
+/* On-load reveal used by <Reveal>. Content is visible by default; the animation
+   only enhances it, so no-JS and crawlers always see the content. */
+@keyframes reveal-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.reveal {
+  animation: reveal-in 0.5s var(--ease-out) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    animation: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
