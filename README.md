@@ -32,7 +32,7 @@ and reviews (med spas, salons, clinics), use the **local-service** starter inste
 
 ```
 app/
-  layout.tsx      root layout: fonts + SEO metadata (reads lib/site.ts)
+  layout.tsx      root layout: fonts + SEO metadata + JSON-LD (reads lib/site.ts)
   page.tsx        homepage: hero, proof, services, about, CTA (placeholder copy)
   globals.css     design tokens (REBRAND HERE) + base styles + helpers
   sitemap.ts      /sitemap.xml
@@ -41,11 +41,25 @@ app/
 components/
   Nav.tsx         sticky nav with mobile menu
   Footer.tsx      footer with contact + socials + credit
+  JsonLd.tsx      renders schema.org JSON-LD
   Reveal.tsx      on-load fade/rise wrapper (pure CSS, no-JS safe)
 lib/
-  site.ts         ← single source of truth for brand + copy
+  site.ts         ← single source of truth for brand + copy + seo
+  schema.ts       Organization / LocalBusiness structured data (built from site.ts)
   cn.ts           className helper (clsx)
 ```
+
+## SEO — ships SEO-ready
+
+Every build gets the on-page/technical basics for free: canonical URL, explicit robots +
+rich-snippet hints, OpenGraph/Twitter cards, `sitemap.xml`, `robots.txt`, and **schema.org
+JSON-LD** (`lib/schema.ts` → injected in `layout.tsx`).
+
+Defaults to **Organization** (name, url, description, logo, socials `sameAs`, contact point) —
+fine for any business. If the client has a **physical storefront**, set a LocalBusiness
+`schemaType` (e.g. `Store`, `ProfessionalService`) and fill the address/geo/areaServed block
+in `lib/site.ts` → it then emits full LocalBusiness data too. Add `/public/og.jpg` (1200×630)
+and set `NEXT_PUBLIC_SITE_URL`. Validate with Google's Rich Results Test after deploy.
 
 ## Conventions
 
