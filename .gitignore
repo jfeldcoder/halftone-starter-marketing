@@ -29,3 +29,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# reel render deps / vendored fonts
+marketing/reels/build/node_modules
+marketing/reels/build/fonts/

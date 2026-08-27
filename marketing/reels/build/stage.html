@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Reel 01 stage</title>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body { width: 1080px; height: 1920px; overflow: hidden; background: #08070c; }
+
+  :root {
+    --ed-bg:    #15141c;
+    --ed-chrome:#1d1c26;
+    --ed-line:  #2a2836;
+    --ed-fg:    #dedbe8;
+    --ed-dim:   #5d5a70;
+    --ed-key:   #8b83ff;
+    --ed-str:   #f0a58c;
+    --ed-com:   #5d5a70;
+    --ed-punc:  #a9a5bc;
+    --ed-num:   #fb7440;
+    --sel:      rgba(86, 96, 210, 0.55);
+    --stage-bg: #08070c;
+  }
+
+  #stage { position: relative; width: 1080px; height: 1920px; background: var(--stage-bg); }
+
+  /* ---------------- browser pane ---------------- */
+  #browser { position: absolute; left: 0; width: 1080px; overflow: hidden; }
+  #chrome {
+    position: absolute; left: 0; width: 1080px;
+    background: var(--ed-chrome);
+    border-bottom: 1px solid var(--ed-line);
+    display: flex; align-items: center; gap: 18px; padding: 0 26px;
+  }
+  .lights { display: flex; gap: 9px; flex: none; }
+  .lights i { width: 13px; height: 13px; border-radius: 50%; display: block; }
+  .l1 { background: #ff5f57; } .l2 { background: #febc2e; } .l3 { background: #28c840; }
+  #urlbar {
+    flex: 1; height: 44px; border-radius: 22px; background: #100f17;
+    border: 1px solid var(--ed-line);
+    display: flex; align-items: center; padding: 0 20px; gap: 10px;
+    font-family: "IBM Plex Mono", monospace; font-size: 21px; color: var(--ed-dim);
+  }
+  #urlbar b { color: #a9a5bc; font-weight: 500; }
+  #viewport { position: absolute; left: 0; width: 1080px; overflow: hidden; background: #fff; }
+  #site { position: absolute; left: 0; top: 0; border: 0; transform-origin: 0 0; }
+
+  /* ---------------- editor pane ---------------- */
+  #editor { position: absolute; left: 0; top: 0; width: 1080px; background: var(--ed-bg); overflow: hidden; }
+  #edchrome {
+    height: 96px; background: var(--ed-chrome); border-bottom: 1px solid var(--ed-line);
+    display: flex; align-items: flex-end; gap: 22px; padding: 0 26px;
+  }
+  #edchrome .lights { padding-bottom: 30px; }
+  .tab {
+    display: flex; align-items: center; gap: 11px;
+    height: 56px; padding: 0 24px;
+    background: var(--ed-bg); border: 1px solid var(--ed-line); border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    font-family: "IBM Plex Mono", monospace; font-size: 22px; font-weight: 500; color: var(--ed-fg);
+  }
+  .tab .dot { width: 11px; height: 11px; border-radius: 50%; background: var(--ed-num); flex: none; }
+  #code {
+    padding: 34px 0 0 0;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 25px; line-height: 38.75px;
+    color: var(--ed-fg);
+    white-space: pre;
+    counter-reset: ln;
+  }
+  .row { display: flex; height: 38.75px; align-items: baseline; }
+  .gutter {
+    width: 96px; flex: none; text-align: right; padding-right: 30px;
+    color: #3d3a4d; font-size: 21px; font-variant-numeric: tabular-nums;
+  }
+  .src { flex: 1; padding-right: 40px; }
+  .k { color: var(--ed-key); }
+  .s { color: var(--ed-str); }
+  .c { color: var(--ed-com); font-style: italic; }
+  .p { color: var(--ed-punc); }
+  .n { color: var(--ed-num); }
+  .sel { background: var(--sel); border-radius: 2px; }
+  .sw {
+    display: inline-block; width: 18px; height: 18px; border-radius: 3px;
+    border: 1px solid rgba(255,255,255,0.22); margin-right: 9px;
+    transform: translateY(1px);
+  }
+  .caret {
+    display: inline-block; width: 3px; height: 30px; background: #fff;
+    transform: translateY(5px); margin-left: -1px; border-radius: 1px;
+  }
+
+  /* ---------------- overlay ---------------- */
+  #overlay { position: absolute; inset: 0; pointer-events: none; }
+  #scrim { position: absolute; inset: 0; background: #08070c; opacity: 0; }
+  /* Title band: keeps overlay copy off the site's own headline in the
+     full-bleed shots, instead of dimming the site into mud. */
+  #band { position: absolute; left: 0; top: 0; width: 1080px; height: 0;
+          background: #0c0b10; display: none; }
+  #band .edge { position: absolute; left: 0; bottom: 0; width: 1080px; height: 5px; }
+
+  .big {
+    position: absolute; left: 84px; right: 84px;
+    font-family: "Archivo", sans-serif; font-weight: 800;
+    letter-spacing: -0.035em; line-height: 0.96;
+    color: #fff; text-wrap: balance;
+  }
+
+  #hook { top: 286px; font-size: 100px; }
+  #hook .accent { color: #8b83ff; }
+
+  #onetoken {
+    left: 0; right: 0; text-align: center; top: 690px;
+    font-size: 104px; color: #fff;
+  }
+  #onetoken .u { display: inline-block; border-bottom: 12px solid #fb7440; padding-bottom: 14px; }
+
+  #darkline { top: 214px; font-size: 80px; }
+
+  #endcard { position: absolute; inset: 0; background: #0c0b10; opacity: 0; }
+  #endcard .inner {
+    position: absolute; left: 84px; right: 84px; top: 720px;
+  }
+  #endcard .mark {
+    font-family: "Archivo", sans-serif; font-weight: 800; font-size: 40px;
+    letter-spacing: 0.22em; text-transform: uppercase; color: #6f6c80;
+    margin-bottom: 44px;
+  }
+  #endcard h2 {
+    font-family: "Archivo", sans-serif; font-weight: 800; font-size: 122px;
+    line-height: 0.94; letter-spacing: -0.035em; color: #fff;
+  }
+  #endcard .bar { height: 12px; background: #fb7440; margin-top: 52px; width: 0; border-radius: 2px; }
+  #endcard .handle {
+    font-family: "IBM Plex Mono", monospace; font-size: 34px; font-weight: 500;
+    color: #6f6c80; margin-top: 40px; letter-spacing: 0.04em;
+  }
+
+  /* file label chip */
+  #filechip {
+    position: absolute; font-family: "IBM Plex Mono", monospace;
+    font-size: 26px; font-weight: 600; letter-spacing: 0.04em;
+    color: #fff; background: rgba(12,11,16,0.82);
+    border: 1px solid rgba(255,255,255,0.16);
+    padding: 12px 22px; border-radius: 999px;
+    left: 40px; top: 742px; opacity: 0;
+  }
+
+  /* tick row */
+  #ticks {
+    position: absolute; left: 40px; right: 40px; top: 742px;
+    display: flex; gap: 26px; flex-wrap: wrap;
+    font-family: "IBM Plex Mono", monospace; font-size: 26px; font-weight: 600;
+    opacity: 0;
+  }
+  #ticks span { color: #4a4757; transition: none; }
+  #ticks span.on { color: #fb7440; }
+</style>
+</head>
+<body>
+
+<div id="stage">
+
+  <div id="browser">
+    <div id="chrome">
+      <span class="lights"><i class="l1"></i><i class="l2"></i><i class="l3"></i></span>
+      <span id="urlbar"><b>localhost:3000</b></span>
+    </div>
+    <div id="viewport"><iframe id="site" src="http://127.0.0.1:3000/" scrolling="no"></iframe></div>
+  </div>
+
+  <div id="editor">
+    <div id="edchrome">
+      <span class="lights"><i class="l1"></i><i class="l2"></i><i class="l3"></i></span>
+      <span class="tab"><span class="dot"></span><span id="tabname">lib/site.ts</span></span>
+    </div>
+    <div id="code"></div>
+  </div>
+
+  <div id="overlay">
+    <div id="scrim"></div>
+    <div id="band"><span class="edge"></span></div>
+    <div id="hook" class="big"></div>
+    <div id="onetoken" class="big"></div>
+    <div id="darkline" class="big"></div>
+    <div id="filechip"></div>
+    <div id="ticks">
+      <span data-k="name">name ✓</span>
+      <span data-k="tagline">tagline ✓</span>
+      <span data-k="cta">cta ✓</span>
+      <span data-k="socials">socials ✓</span>
+    </div>
+    <div id="endcard">
+      <div class="inner">
+        <div class="mark">Halftone</div>
+        <h2>New client site.<br>Five minutes.</h2>
+        <div class="bar"></div>
+        <div class="handle">@halftone.studio</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ============================================================
+   Reel 01 — "Rebrand in two files"
+   Single source of truth for the 18s timeline. The Playwright
+   driver calls applyStage(t) and REEL.siteState(t) per frame.
+   ============================================================ */
+
+const FPS = 30, DURATION = 18;
+
+/* --- geometry --- */
+const W = 1080, H = 1920;
+const SPLIT_IFRAME_W = 1150;
+const SPLIT_SCALE = W / SPLIT_IFRAME_W;          // 0.7714
+const ED_H = 860, GAP = 40;
+const BR_TOP = ED_H + GAP, BR_CHROME = 84;
+const BR_VP_TOP = BR_TOP + BR_CHROME;
+const BR_VP_H = H - BR_VP_TOP;
+const FULL_IFRAME_W = 1200;
+const FULL_SCALE = W / FULL_IFRAME_W;            // 0.9
+
+/* --- easing / helpers --- */
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const inv = (t, a, b) => clamp((t - a) / (b - a), 0, 1);
+const easeOut = p => 1 - Math.pow(1 - p, 3);
+const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+/* --- the edits, in order --- */
+const EDITS = {
+  name:    { sel: [1.70, 2.00], type: [2.00, 2.85], from: "Client Name",
+             to: "Yumori" },
+  tagline: { sel: [3.00, 3.28], type: [3.28, 4.95], from: "A one line promise about what this business does.",
+             to: "Small-batch ramen, made twice a day." },
+  desc:    { sel: [5.15, 5.42], type: [5.42, 6.55], from: "One or two sentences about the business.",
+             to: "A ten-seat counter serving tonkotsu and shoyu." },
+  cta:     { sel: [6.72, 6.95], type: [6.95, 7.55], from: "Get in touch",
+             to: "Book a table" },
+  social:  { sel: [7.72, 7.80], type: [7.80, 8.34], from: "",
+             to: "@yumori" },
+  accent:  { sel: [9.20, 9.52], type: [9.52, 10.34], from: "#4f46e5", to: "#c2410c" },
+  light:   { sel: [10.62, 10.74], type: [10.74, 11.30], from: "#6d64f0", to: "#ea580c" },
+  dark:    { sel: [11.46, 11.58], type: [11.58, 12.12], from: "#3b32c4", to: "#9a3412" },
+};
+
+/* Returns {text, state} where state is "before" | "sel" | "typing" | "after". */
+function editValue(e, t) {
+  if (t < e.sel[0]) return { text: e.from, state: "before" };
+  if (t < e.sel[1]) return { text: e.from, state: "sel" };
+  if (t < e.type[1]) {
+    const p = inv(t, e.type[0], e.type[1]);
+    const n = Math.round(p * e.to.length);
+    return { text: e.to.slice(0, n), state: "typing" };
+  }
+  return { text: e.to, state: "after" };
+}
+
+/* --- site state the driver pushes into the real page --- */
+function siteState(t) {
+  const name = editValue(EDITS.name, t);
+  const tagline = editValue(EDITS.tagline, t);
+  const desc = editValue(EDITS.desc, t);
+  const cta = editValue(EDITS.cta, t);
+  const acc = editValue(EDITS.accent, t);
+  const lig = editValue(EDITS.light, t);
+  const drk = editValue(EDITS.dark, t);
+
+  const hex = v => (/^#[0-9a-f]{6}$/i.test(v) ? v : null);
+  const isDark = t >= 13.0;
+
+  return {
+    name: name.text || " ",
+    tagline: tagline.text || " ",
+    description: desc.text || " ",
+    cta: cta.text || " ",
+    // Only commit a color once it is a complete, valid hex — so the site
+    // flips on the final keystroke, exactly like the real edit.
+    accent:      isDark ? "#fb7440" : hex(acc.text),
+    accentLight: isDark ? "#ff9160" : hex(lig.text),
+    accentDark:  isDark ? "#e2551f" : hex(drk.text),
+    dark: isDark,
+  };
+}
+
+/* --- editor documents --- */
+function tok(cls, v) { return '<span class="' + cls + '">' + esc(v) + "</span>"; }
+
+function valueSpan(ev, t, withCaret) {
+  const cls = ev.state === "sel" ? "s sel" : "s";
+  let html = '<span class="' + cls + '">' + esc(ev.text) + "</span>";
+  if (withCaret && ev.state === "typing") html += '<span class="caret"></span>';
+  return html;
+}
+
+function hexSpan(ev) {
+  const valid = /^#[0-9a-f]{6}$/i.test(ev.text);
+  const sw = valid ? '<span class="sw" style="background:' + ev.text + '"></span>' : "";
+  const cls = ev.state === "sel" ? "n sel" : "n";
+  let html = sw + '<span class="' + cls + '">' + esc(ev.text) + "</span>";
+  if (ev.state === "typing") html += '<span class="caret"></span>';
+  return html;
+}
+
+function docSiteTs(t) {
+  const name = editValue(EDITS.name, t);
+  const tag = editValue(EDITS.tagline, t);
+  const desc = editValue(EDITS.desc, t);
+  const cta = editValue(EDITS.cta, t);
+  const soc = editValue(EDITS.social, t);
+
+  return [
+    tok("k", "export const") + tok("p", " site = {"),
+    tok("p", "  name: ") + tok("s", '"') + valueSpan(name, t, true) + tok("s", '",'),
+    tok("c", "  // Shown in the hero and the meta title."),
+    tok("p", "  tagline: ") + tok("s", '"') + valueSpan(tag, t, true) + tok("s", '",'),
+    tok("c", "  // Longer description for SEO / social cards."),
+    tok("p", "  description:"),
+    tok("s", '    "') + valueSpan(desc, t, true) + tok("s", '",'),
+    "",
+    tok("p", "  cta: { label: ") + tok("s", '"') + valueSpan(cta, t, true) +
+      tok("s", '"') + tok("p", ", href: ") + tok("s", '"#contact"') + tok("p", " },"),
+    "",
+    tok("p", "  socials: {"),
+    tok("p", "    instagram: ") + tok("s", '"') + valueSpan(soc, t, true) + tok("s", '",'),
+    tok("p", "    x: ") + tok("s", '""') + tok("p", ","),
+    tok("p", "    linkedin: ") + tok("s", '""') + tok("p", ","),
+    tok("p", "  },"),
+  ];
+}
+
+function docGlobalsCss(t) {
+  const acc = editValue(EDITS.accent, t);
+  const lig = editValue(EDITS.light, t);
+  const drk = editValue(EDITS.dark, t);
+  const plain = (name, hex) =>
+    tok("k", "  " + name) + tok("p", ": ") +
+    '<span class="sw" style="background:' + hex + '"></span>' + tok("n", hex) + tok("p", ";");
+
+  return [
+    tok("k", ":root") + tok("p", " {"),
+    tok("c", "  /* Base ramp (light) */"),
+    plain("--bg", "#ffffff"),
+    plain("--surface", "#f0f0ee"),
+    plain("--fg", "#16161a"),
+    plain("--fg-muted", "#55555f"),
+    "",
+    tok("c", "  /* Accent — the one brand color */"),
+    tok("k", "  --accent") + tok("p", ": ") + hexSpan(acc) + tok("p", ";"),
+    tok("k", "  --accent-light") + tok("p", ": ") + hexSpan(lig) + tok("p", ";"),
+    tok("k", "  --accent-dark") + tok("p", ": ") + hexSpan(drk) + tok("p", ";"),
+    plain("--on-accent", "#ffffff"),
+    tok("p", "}"),
+  ];
+}
+
+function renderCode(lines, startLine) {
+  let html = "";
+  for (let i = 0; i < lines.length; i++) {
+    html += '<div class="row"><div class="gutter">' + (startLine + i) +
+            '</div><div class="src">' + (lines[i] || "&nbsp;") + "</div></div>";
+  }
+  return html;
+}
+
+/* --- layout modes --- */
+function layoutFull(pushProgress, band) {
+  band = band || 0;
+  const visible = H - band;
+  const scale = FULL_SCALE * (1 + 0.045 * pushProgress);
+  const site = document.getElementById("site");
+  site.style.width = FULL_IFRAME_W + "px";
+  site.style.height = Math.ceil(visible / FULL_SCALE) + "px";
+  site.style.transform = "scale(" + scale + ")";
+  site.style.left = (-(FULL_IFRAME_W * scale - W) / 2) + "px";
+
+  document.getElementById("editor").style.display = "none";
+  document.getElementById("chrome").style.display = "none";
+  const b = document.getElementById("browser");
+  b.style.top = band + "px"; b.style.height = visible + "px";
+  const vp = document.getElementById("viewport");
+  vp.style.top = "0px"; vp.style.height = visible + "px"; vp.style.width = W + "px";
+}
+
+function layoutSplit() {
+  const site = document.getElementById("site");
+  site.style.width = SPLIT_IFRAME_W + "px";
+  site.style.height = Math.ceil(BR_VP_H / SPLIT_SCALE) + "px";
+  site.style.transform = "scale(" + SPLIT_SCALE + ")";
+  site.style.left = "0px";
+
+  document.getElementById("editor").style.display = "block";
+  document.getElementById("editor").style.height = ED_H + "px";
+  const ch = document.getElementById("chrome");
+  ch.style.display = "flex";
+  ch.style.top = "0px"; ch.style.height = BR_CHROME + "px";
+  const b = document.getElementById("browser");
+  b.style.top = BR_TOP + "px"; b.style.height = (H - BR_TOP) + "px";
+  const vp = document.getElementById("viewport");
+  vp.style.top = BR_CHROME + "px"; vp.style.height = BR_VP_H + "px"; vp.style.width = W + "px";
+}
+
+/* --- the frame renderer --- */
+function applyStage(t) {
+  const $ = id => document.getElementById(id);
+  const hook = $("hook"), one = $("onetoken"), darkline = $("darkline"),
+        endcard = $("endcard"), scrim = $("scrim"), chip = $("filechip"), ticks = $("ticks");
+
+  // reset per-frame
+  hook.style.opacity = 0; one.style.opacity = 0; darkline.style.opacity = 0;
+  endcard.style.opacity = 0; scrim.style.opacity = 0; chip.style.opacity = 0;
+  ticks.style.opacity = 0;
+  const band = $("band"); band.style.display = "none";
+
+  if (t < 1.5) {
+    /* ---- Scene A: cold open, full-bleed indigo site + hook ---- */
+    layoutFull(easeOut(inv(t, 0, 1.5)), 660);
+    band.style.display = "block";
+    band.style.height = "660px";
+    band.querySelector(".edge").style.background = "#4f46e5";
+    hook.style.opacity = 1;
+    const p = easeOut(inv(t, 0.10, 0.55));
+    const p2 = easeOut(inv(t, 0.45, 0.95));
+    hook.innerHTML =
+      '<div style="opacity:' + p + ';transform:translateY(' + (26 * (1 - p)) + 'px)">A whole brand change.</div>' +
+      '<div style="opacity:' + p2 + ';transform:translateY(' + (26 * (1 - p2)) + 'px)" class="accent">Two files.</div>';
+
+  } else if (t < 8.5) {
+    /* ---- Scene B: lib/site.ts ---- */
+    layoutSplit();
+    $("tabname").textContent = "lib/site.ts";
+    $("code").innerHTML = renderCode(docSiteTs(t), 7);
+
+    if (t < 2.6) {
+      chip.style.opacity = easeOut(inv(t, 1.55, 1.95));
+      chip.textContent = "file 1 of 2";
+    } else {
+      ticks.style.opacity = 1;
+      const done = {
+        name: t > 2.95, tagline: t > 5.05, cta: t > 7.6, socials: t > 8.36,
+      };
+      [].forEach.call(ticks.children, el => {
+        el.className = done[el.dataset.k] ? "on" : "";
+      });
+    }
+
+  } else if (t < 13.0) {
+    /* ---- Scene C: app/globals.css, the accent swap ---- */
+    layoutSplit();
+    $("tabname").textContent = "app/globals.css";
+    $("code").innerHTML = renderCode(docGlobalsCss(t), 9);
+
+    if (t < 9.1) {
+      chip.style.opacity = easeOut(inv(t, 8.55, 8.95));
+      chip.textContent = "file 2 of 2";
+    }
+    if (t >= 10.34 && t < 12.7) {
+      const p = easeOut(inv(t, 10.34, 10.62));
+      const out = 1 - easeOut(inv(t, 12.45, 12.7));
+      one.style.opacity = p * out;
+      one.innerHTML = '<span class="u" style="transform:scale(' + (0.94 + 0.06 * p) + ');display:inline-block">one token</span>';
+    }
+
+  } else if (t < 15.5) {
+    /* ---- Scene D: dark mode reveal ---- */
+    layoutFull(easeOut(inv(t, 13.0, 15.5)) * 0.5, 520);
+    band.style.display = "block";
+    band.style.height = "520px";
+    band.querySelector(".edge").style.background = "#fb7440";
+    darkline.style.opacity = easeOut(inv(t, 13.15, 13.6));
+    const p = easeOut(inv(t, 13.15, 13.6));
+    darkline.innerHTML =
+      '<div style="transform:translateY(' + (22 * (1 - p)) + 'px)">…and dark mode<br>was already done.</div>';
+
+  } else {
+    /* ---- Scene E: end card ---- */
+    layoutFull(0.5, 0);
+    scrim.style.opacity = 1;
+    endcard.style.opacity = 1;
+    const p = easeOut(inv(t, 15.55, 16.05));
+    const bar = easeOut(inv(t, 16.05, 16.75));
+    const inner = endcard.querySelector(".inner");
+    inner.style.opacity = p;
+    inner.style.transform = "translateY(" + (24 * (1 - p)) + "px)";
+    endcard.querySelector(".bar").style.width = (bar * 420) + "px";
+  }
+}
+
+window.REEL = { FPS, DURATION, siteState, applyStage };
+window.applyStage = applyStage;
+</script>
+</body>
+</html>
