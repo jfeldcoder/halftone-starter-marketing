@@ -422,10 +422,11 @@ function applyStage(t) {
     band.style.height = "660px";
     band.querySelector(".edge").style.background = "#4f46e5";
     hook.style.opacity = 1;
-    const p = easeOut(inv(t, 0.10, 0.55));
-    const p2 = easeOut(inv(t, 0.45, 0.95));
+    // Line one is up on frame zero — it is the hook, and frame zero is the
+    // thumbnail. Only the payoff line animates in.
+    const p2 = easeOut(inv(t, 0.12, 0.50));
     hook.innerHTML =
-      '<div style="opacity:' + p + ';transform:translateY(' + (26 * (1 - p)) + 'px)">A whole brand change.</div>' +
+      '<div>A whole brand change.</div>' +
       '<div style="opacity:' + p2 + ';transform:translateY(' + (26 * (1 - p2)) + 'px)" class="accent">Two files.</div>';
 
   } else if (t < 8.5) {

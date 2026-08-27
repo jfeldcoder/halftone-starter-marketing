@@ -9,6 +9,30 @@ legible color jump on a phone screen.
 
 ---
 
+## Rendered version
+
+This reel was built rather than filmed — `build/render.mjs` runs the production
+site in Chromium and captures 540 frames, so the hero copy on screen is the text
+being typed in the editor pane above it and the recolor is the real `--accent`
+token changing. Output: `halftone-reel-01.mp4`, 18.00s, 1080×1920, H.264, silent
+(add the audio in-app so the post gets trending-audio distribution).
+
+Three things in the built cut differ from the shot list below:
+
+- **Scenes 1 and 5 use a title band, not a dimmed site.** Overlaying copy on a
+  dimmed page put the reel's headline on top of the site's own headline and both
+  lost. The built version gives the copy a solid block with an accent hairline
+  and leaves the site clean underneath.
+- **The hook is up on frame one.** No fade on the first line — frame zero is the
+  thumbnail, so it has to carry the hook. Only "Two files." animates in.
+- **The `description` line in the editor is shortened** from the starter's real
+  placeholder so it fits one legible line at 25px. Everything else on screen is
+  the file as it ships.
+
+The section below is still the reference if you ever want to shoot it live.
+
+---
+
 ## Setup before you record
 
 - Screen at **1920×1080**, editor and browser **side by side, 50/50**. You will crop
