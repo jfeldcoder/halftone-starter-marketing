@@ -18,7 +18,7 @@ export default function Configurator() {
     for (const p of products) {
       const n = qty[p.slug] ?? 0;
       if (p.slug === "event-deck") {
-        seats += n * 40; // rough guests per standard 8 ft section cluster
+        seats += n * p.seats; // Event Deck: up to 120 guests or crew per deck
       } else {
         seats += n * p.seats;
       }
@@ -61,7 +61,7 @@ export default function Configurator() {
                 <div>
                   <div className="font-semibold text-fg">{p.name}</div>
                   <div className="text-xs text-fg-faint">
-                    {p.slug === "event-deck" ? "~40 guests per section cluster" : `${p.seats} seats`} · {p.setupMinutes} min · {p.crew} operator{p.crew > 1 ? "s" : ""}
+                    {p.slug === "event-deck" ? `up to ${p.seats} guests` : `${p.seats} seats`} · {p.setupMinutes} min · {p.crew} operator{p.crew > 1 ? "s" : ""}
                   </div>
                 </div>
                 <div className="flex items-center gap-2">

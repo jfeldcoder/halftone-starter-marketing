@@ -3,7 +3,7 @@ import Link from "next/link";
 import Reveal from "@/components/Reveal";
 import Photo from "@/components/Photo";
 import CTABand from "@/components/CTABand";
-import { posts } from "@/lib/content";
+import { posts } from "@/lib/posts";
 
 export const metadata: Metadata = {
   title: "Blog",
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 };
 
 function fmt(d: string) {
-  return new Date(d).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  return new Date(d).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
 }
 
 export default function BlogPage() {
@@ -25,7 +25,7 @@ export default function BlogPage() {
           <Reveal className="max-w-2xl">
             <p className="eyebrow-accent">Insights</p>
             <h1 className="display mt-4 text-5xl font-extrabold leading-[0.98] text-fg sm:text-6xl">Notes from the field.</h1>
-            <p className="mt-5 text-lg text-fg-muted">Event seating, safety, and how operators grow with EventPro.</p>
+            <p className="mt-5 text-lg text-fg-muted">Event seating, safety, ROI, and how operators grow with EventPro. Written by Nick Pinto.</p>
           </Reveal>
         </div>
       </section>
@@ -37,7 +37,7 @@ export default function BlogPage() {
               <Photo src={featured.image} alt={featured.title} className="transition-transform duration-700 group-hover:scale-105" priority />
             </div>
             <div className="flex flex-col justify-center p-8 sm:p-12">
-              <span className="eyebrow-accent">{featured.category} · Featured</span>
+              <span className="eyebrow-accent">{featured.categories[0]} · Featured</span>
               <h2 className="display mt-3 text-3xl font-extrabold leading-tight text-fg group-hover:text-accent-dark sm:text-4xl">{featured.title}</h2>
               <p className="mt-4 text-fg-muted">{featured.excerpt}</p>
               <p className="mt-6 text-xs text-fg-faint">
@@ -55,7 +55,7 @@ export default function BlogPage() {
                   <Photo src={p.image} alt={p.title} sizes="(min-width: 768px) 33vw, 100vw" className="transition-transform duration-700 group-hover:scale-105" />
                 </div>
                 <div className="p-6">
-                  <span className="eyebrow-accent">{p.category}</span>
+                  <span className="eyebrow-accent">{p.categories[0]}</span>
                   <h3 className="display mt-2 text-xl font-extrabold leading-snug text-fg group-hover:text-accent-dark">{p.title}</h3>
                   <p className="mt-2 text-sm text-fg-muted">{p.excerpt}</p>
                   <p className="mt-4 text-xs text-fg-faint">

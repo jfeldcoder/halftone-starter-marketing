@@ -39,7 +39,7 @@ export default function AboutPage() {
           </Reveal>
           <Reveal delay={0.15} className="lg:col-span-5">
             <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem]">
-              <Photo src={assetManifest.about.team} alt="The EventPro Seating team at the Brooksville facility" priority />
+              <Photo src={assetManifest.about.team} alt="Bleacher frames on the manufacturing floor in Brooksville, Florida" priority />
             </div>
           </Reveal>
         </div>
@@ -84,7 +84,7 @@ export default function AboutPage() {
         <div className="container-page grid gap-12 py-20 sm:py-28 lg:grid-cols-2 lg:items-center">
           <Reveal>
             <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem]">
-              <Photo src={assetManifest.about.facility} alt="Manufacturing floor in Brooksville, Florida" />
+              <Photo src={assetManifest.about.facility} alt="The full lineup: 3 Row, 10 Row, and Event Deck" />
             </div>
           </Reveal>
           <div>

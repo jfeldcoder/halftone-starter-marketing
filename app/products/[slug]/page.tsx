@@ -77,10 +77,10 @@ export default async function ProductPage({ params }: Params) {
       <section className="border-y border-line bg-ink text-white">
         <div className="container-page grid divide-y divide-white/10 sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4">
           {[
-            { v: isDeck ? null : p.seats, s: "", l: isDeck ? "Scales with footprint" : "Guests seated", alt: "Modular" },
+            { v: p.seats, s: "", l: isDeck ? "Guests or crew" : "Guests seated", alt: "" },
             { v: p.setupMinutes, s: " min", l: "Setup time" },
             { v: p.crew, s: "", l: `Operator${p.crew > 1 ? "s" : ""} required` },
-            { v: isDeck ? null : p.rows, s: "", l: isDeck ? "Section size" : "Rows", alt: "8 ft" },
+            { v: isDeck ? null : p.rows, s: "", l: isDeck ? "Open footprint" : "Rows", alt: "37′ × 24′" },
           ].map((k, i) => (
             <Reveal key={k.l} delay={i * 0.06} className="px-2 py-8 sm:px-8">
               <div className="display text-4xl font-extrabold text-accent">{k.v === null ? k.alt : <Counter value={k.v} suffix={k.s} />}</div>
@@ -90,8 +90,45 @@ export default async function ProductPage({ params }: Params) {
         </div>
       </section>
 
+      {/* Highlights + dimensions */}
+      <section className="container-page grid gap-12 py-20 sm:py-28 lg:grid-cols-[1.2fr_0.8fr]">
+        <div>
+          <SectionHeading eyebrow="At a glance" title="The short version." />
+          <ul className="mt-8 grid gap-3 sm:grid-cols-2">
+            {p.bullets.map((b, i) => (
+              <Reveal key={b} as="li" delay={i * 0.05} y={12}>
+                <div className="flex gap-3 rounded-2xl border border-line bg-bg-elev p-4 text-[15px] text-fg">
+                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent text-[11px] text-on-accent">✓</span>
+                  {b}
+                </div>
+              </Reveal>
+            ))}
+          </ul>
+        </div>
+        <Reveal delay={0.1}>
+          <div className="on-ink relative h-full overflow-hidden rounded-[1.5rem] bg-ink p-7 text-white">
+            <div className="bg-grid-ink absolute inset-0 opacity-30" />
+            <div className="relative">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/50">Dimensions</p>
+              <dl className="mt-5 space-y-5">
+                {p.dimensions.map((d) => (
+                  <div key={d.label}>
+                    <dt className="text-sm text-white/60">{d.label}</dt>
+                    <dd className="display mt-1 text-2xl font-extrabold text-accent">{d.value}</dd>
+                  </div>
+                ))}
+              </dl>
+              <div className="mt-8 opacity-80">
+                <BleacherIllustration rows={p.rows} variant={isDeck ? "deck" : "bleacher"} dark />
+              </div>
+            </div>
+          </div>
+        </Reveal>
+      </section>
+
       {/* Features */}
-      <section className="container-page py-20 sm:py-28">
+      <section className="border-t border-line bg-bg-elev">
+        <div className="container-page py-20 sm:py-28">
         <SectionHeading eyebrow="Built for the job" title="What makes it different." />
         <div className="mt-12 grid gap-4 sm:grid-cols-2">
           {p.features.map((f, i) => (
@@ -108,7 +145,28 @@ export default async function ProductPage({ params }: Params) {
             </Reveal>
           ))}
         </div>
+        </div>
       </section>
+
+      {/* Trailer-mounted variant (3 Row only) */}
+      {p.variant && (
+        <section className="container-page py-20 sm:py-28">
+          <SectionHeading eyebrow={p.variant.name} title={p.variant.headline} lead={p.variant.intro} />
+          <ul className="mt-10 grid gap-3 md:grid-cols-2">
+            {p.variant.bullets.map((b, i) => (
+              <Reveal key={b} as="li" delay={i * 0.05} y={12}>
+                <div className="flex gap-3 rounded-2xl border border-line p-4 text-[15px] text-fg">
+                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent/15 text-[11px] text-accent-dark">✓</span>
+                  {b}
+                </div>
+              </Reveal>
+            ))}
+          </ul>
+          <div className="mt-10">
+            <Gallery items={p.variant.gallery.map((path, i) => ({ path, src: resolveAsset(path), alt: `${p.variant!.name} photo ${i + 1}`, span: i === 0 ? ("wide" as const) : undefined }))} />
+          </div>
+        </section>
+      )}
 
       {/* Use cases + specs */}
       <section id="specs" className="border-y border-line bg-bg-elev">
@@ -148,7 +206,7 @@ export default async function ProductPage({ params }: Params) {
                   </div>
                 ))}
               </dl>
-              <p className="border-t border-line px-6 py-3 text-xs text-fg-faint">Specs are representative. Confirm the configuration for your event with our team.</p>
+              <p className="border-t border-line px-6 py-3 text-xs text-fg-faint">Specifications from EventPro Seating product data. Confirm the configuration for your event with our team.</p>
             </div>
           </Reveal>
         </div>

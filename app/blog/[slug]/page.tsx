@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { posts, getPost } from "@/lib/content";
+import { posts, getPost } from "@/lib/posts";
 import Photo from "@/components/Photo";
 import Reveal from "@/components/Reveal";
 import CTABand from "@/components/CTABand";
@@ -33,10 +33,10 @@ export default async function PostPage({ params }: Params) {
             <Link href="/blog" className="text-sm text-fg-muted hover:text-fg">
               ← All articles
             </Link>
-            <p className="eyebrow-accent mt-8">{p.category}</p>
+            <p className="eyebrow-accent mt-8">{p.categories.join(" · ")}</p>
             <h1 className="display mt-3 text-4xl font-extrabold leading-[1.02] text-fg sm:text-6xl">{p.title}</h1>
             <p className="mt-5 text-sm text-fg-faint">
-              {new Date(p.date).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })} · {p.readMinutes} min read
+              By {p.author} · {new Date(p.date).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" })} · {p.readMinutes} min read
             </p>
           </Reveal>
           <Reveal delay={0.1} className="mx-auto mt-10 max-w-5xl">
@@ -45,11 +45,17 @@ export default async function PostPage({ params }: Params) {
             </div>
           </Reveal>
           <div className="mx-auto mt-12 max-w-2xl">
-            {p.body.map((para, i) => (
-              <Reveal key={i} delay={0.05} y={12}>
-                <p className="mb-6 text-lg leading-[1.75] text-fg-muted first-of-type:text-xl first-of-type:text-fg">{para}</p>
-              </Reveal>
-            ))}
+            {p.body.map((b, i) =>
+              b.type === "h2" ? (
+                <Reveal key={i} delay={0.05} y={12}>
+                  <h2 className="display mb-4 mt-10 text-2xl font-extrabold text-fg sm:text-3xl">{b.text}</h2>
+                </Reveal>
+              ) : (
+                <Reveal key={i} delay={0.05} y={12}>
+                  <p className="mb-6 text-lg leading-[1.75] text-fg-muted">{b.text}</p>
+                </Reveal>
+              ),
+            )}
           </div>
         </div>
       </article>
@@ -64,7 +70,7 @@ export default async function PostPage({ params }: Params) {
                   <Photo src={o.image} alt={o.title} sizes="8rem" />
                 </div>
                 <div>
-                  <span className="eyebrow-accent">{o.category}</span>
+                  <span className="eyebrow-accent">{o.categories[0]}</span>
                   <h3 className="display mt-1 text-lg font-extrabold leading-snug text-fg group-hover:text-accent-dark">{o.title}</h3>
                 </div>
               </Link>

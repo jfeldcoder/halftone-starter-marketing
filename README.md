@@ -16,57 +16,54 @@ npm run lint
 
 | Route | What's there |
 | --- | --- |
-| `/` | Logo-reveal splash (once per session), animated hero with row-by-row bleacher build, stats counters, product lineup, "why" bento, scroll-drawn process timeline, gallery with lightbox, rotating testimonials, blog teaser, CTA |
+| `/` | Logo-reveal splash (once per session), animated hero, stats counters, product lineup, "How to profit" grid with the original icons, scroll-drawn process timeline, gallery with lightbox, proof band, blog teaser, CTA |
 | `/products/3-row-bleachers`, `/products/10-row-bleachers`, `/products/event-deck` | Product pages: hero, key numbers, features, use cases, spec table, gallery, related products |
 | `/sales` | Rent vs. Buy toggle, interactive seating planner (capacity + setup time, sends config to the form), territory program, purchase process, FAQ |
 | `/about` | Story, timeline, values, HQ, full FAQ accordion (`/about#faq`) |
-| `/blog`, `/blog/[slug]` | Four articles ported from the current site's topics |
+| `/blog`, `/blog/[slug]` | All 15 articles from the current blog, with headings, dates, categories, and author |
 | `/contact` | Quote form (pre-fills from planner/product links) → `/api/quote` |
 
 Plus `/sitemap.xml`, `/robots.txt`, schema.org LocalBusiness JSON-LD, OpenGraph tags, custom 404.
 
-## Dropping in the real photos
+## Photos and logo
 
-Every photo on the site is a **slot**. If the file exists under `public/`, it renders; if not, a
-labeled placeholder shows the exact path to drop the file into. No code changes needed.
+All photography and the logo were pulled from the current eventproseating.com (Squarespace) site,
+normalized to 1800px JPEGs, and placed in `public/images`. Slots are mapped in `lib/assets.ts`;
+`components/Photo.tsx` renders a labeled placeholder for any slot whose file is missing, so you can
+swap or add photos by file name with no code changes.
 
 ```
 public/
-  logo-mark.svg                 EPS mark (vector rebuild of the client logo; swap if you have the source file)
-  logo.svg                      full logo with wordmark
-  images/
-    og.jpg                      1200×630 social share image
-    home/hero.jpg               hero photo (5:4). Until it exists, the animated SVG bleacher shows instead
-    home/about.jpg              operator deploying a unit (4:3)
-    home/gallery-1.jpg … gallery-6.jpg
-    products/3-row/hero.jpg + gallery-1.jpg … gallery-4.jpg
-    products/10-row/hero.jpg + gallery-1.jpg … gallery-4.jpg
-    products/event-deck/hero.jpg + gallery-1.jpg … gallery-4.jpg
-    about/team.jpg (4:5)  about/facility.jpg (4:3)
-    sales/fleet.jpg (4:5)
-    blog/territory.jpg  blog/safety.jpg  blog/experience.jpg  blog/why.jpg (16:10)
+  logo.png                      full logo (mark + wordmark), used on dark backgrounds (splash, footer)
+  logo-mark@2x.png              EPS mark only, used in the nav
+  images/og.jpg                 1200×630 social share image
+  images/home/                  hero, about, gallery-1…6
+  images/products/3-row/        hero, gallery-1…4, trailer-1…4 (3×3 Row trailer variant)
+  images/products/10-row/       hero, gallery-1…6
+  images/products/event-deck/   hero, gallery-1…6
+  images/about/                 team (manufacturing floor), facility (full lineup)
+  images/sales/                 fleet, all-products
+  images/blog/<slug>.jpg        one per post (15 posts ported from the live blog)
+  images/icons/                 the five "How to profit" icons from the current homepage
 ```
-
-The manifest lives in `lib/assets.ts`. `components/Photo.tsx` does the exists-check on the server.
 
 ## Brand
 
-- Colors: `app/globals.css` `:root` block. Accent orange `#f4a62a` and sand `#e9d3b0` are sampled from the logo.
+- Colors: `app/globals.css` `:root` block. Accent orange `#f1a638` and sand `#e7d1b5` are the exact values from the current site's theme CSS.
 - Fonts: `app/layout.tsx` (Manrope body, Inter Tight display).
-- Copy, nav, contact, SEO: `lib/site.ts`. Products + specs: `lib/products.ts`. FAQ, testimonials,
-  timeline, blog posts: `lib/content.ts`.
+- Copy, nav, contact, SEO: `lib/site.ts`. Products + specs (from the live product pages): `lib/products.ts`.
+  Stats, profit points, proof, FAQ, timeline: `lib/content.ts`. Blog posts (ported verbatim): `lib/posts.ts`.
 
-> Specs and testimonials are drafted from the current site and public listings. Confirm exact
-> figures and get real quotes from the client before launch.
+> Product specs, dimensions, and blog copy come straight from the current site. The FAQ, process,
+> and timeline copy are new and should be read over by the client before launch.
 
 ## Motion
 
 - `components/Splash.tsx` — plays once per browser session (`sessionStorage`), click to skip,
   disabled for `prefers-reduced-motion`.
-- `components/BleacherIllustration.tsx` — SVG bleacher that assembles row by row (used until photos land).
+- `components/BleacherIllustration.tsx` — SVG bleacher / event deck that assembles row by row.
 - `app/template.tsx` — page transitions. `components/ScrollProgress.tsx` — top progress bar.
-- `Reveal`, `Counter`, `ProcessSteps`, `Gallery`, `Testimonials`, `FAQ`, `RentBuy`, `Configurator` are
-  the interactive pieces.
+- `Reveal`, `Counter`, `ProcessSteps`, `Gallery`, `FAQ`, `RentBuy`, `Configurator` are the interactive pieces.
 
 ## Deploy to Vercel
 

@@ -91,7 +91,7 @@ export default function HomeHero({ image }: { image: string | null }) {
           </motion.ul>
         </motion.div>
 
-        <motion.div style={{ y: yArt }} className="relative lg:col-span-6">
+        <motion.div style={{ y: yArt }} className="relative pb-10 lg:col-span-6 lg:pb-0">
           <div className="relative">
             {image ? (
               <motion.div

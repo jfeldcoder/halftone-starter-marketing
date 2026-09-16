@@ -16,10 +16,10 @@ export default function Logo({
   return (
     <Link href="/" aria-label={`${site.name} home`} className={cn("group flex items-center gap-3", className)}>
       <Image
-        src="/logo-mark.svg"
+        src="/logo-mark@2x.png"
         alt=""
-        width={96}
-        height={30}
+        width={101}
+        height={26}
         priority
         className="h-[26px] w-auto transition-transform duration-500 ease-out group-hover:scale-[1.04]"
       />

@@ -51,8 +51,8 @@ export default function ProductCard({ product, image, index = 0 }: { product: Pr
             <p className="mt-2 text-sm leading-relaxed text-fg-muted">{product.headline}</p>
             <dl className="mt-5 grid grid-cols-3 gap-2 border-t border-line pt-4 text-center">
               <div>
-                <dt className="text-[10px] uppercase tracking-[0.14em] text-fg-faint">{product.slug === "event-deck" ? "Capacity" : "Seats"}</dt>
-                <dd className="display text-lg font-extrabold text-fg">{product.slug === "event-deck" ? "Modular" : product.seats}</dd>
+                <dt className="text-[10px] uppercase tracking-[0.14em] text-fg-faint">{product.slug === "event-deck" ? "Guests" : "Seats"}</dt>
+                <dd className="display text-lg font-extrabold text-fg">{product.seats}</dd>
               </div>
               <div>
                 <dt className="text-[10px] uppercase tracking-[0.14em] text-fg-faint">Setup</dt>

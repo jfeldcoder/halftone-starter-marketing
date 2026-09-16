@@ -25,8 +25,8 @@ export function resolveAsset(src: string): string | null {
 
 /** Full list of expected photo slots (for the README + a quick audit script). */
 export const assetManifest = {
-  logo: "/logo.svg",
-  logoMark: "/logo-mark.svg",
+  logo: "/logo.png",
+  logoMark: "/logo-mark@2x.png",
   og: "/images/og.jpg",
   home: {
     hero: "/images/home/hero.jpg",
@@ -40,5 +40,6 @@ export const assetManifest = {
   },
   sales: {
     fleet: "/images/sales/fleet.jpg",
+    allProducts: "/images/sales/all-products.jpg",
   },
 };

@@ -14,13 +14,13 @@
   --fg-muted: #5b5650;
   --fg-faint: #948d83;
 
-  /* Brand: EventPro orange + sand (sampled from the logo). */
-  --accent: #f4a62a;
-  --accent-light: #f7bb58;
-  --accent-dark: #d98a12;
+  /* Brand: EventPro orange + sand, taken from the live site's theme CSS (hsl 35.68 86.85% 58.24% / hsl 33.6 51.02% 80.78%). */
+  --accent: #f1a638;
+  --accent-light: #f5bb62;
+  --accent-dark: #d68a15;
   --on-accent: #1c1305;
-  --sand: #e9d3b0;
-  --sand-light: #f4e9d6;
+  --sand: #e7d1b5;
+  --sand-light: #f3e8d8;
 
   /* Dark "ink" sections + aluminum highlight used in illustrations. */
   --ink: #171411;

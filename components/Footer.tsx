@@ -1,12 +1,13 @@
-import Link from "next/link";
 import { site } from "@/lib/site";
 import { products } from "@/lib/products";
-import Logo from "@/components/Logo";
+import Image from "next/image";
+import Link from "next/link";
 
 const SOCIALS = [
   { key: "instagram", label: "Instagram" },
-  { key: "x", label: "X" },
+  { key: "facebook", label: "Facebook" },
   { key: "linkedin", label: "LinkedIn" },
+  { key: "x", label: "X" },
 ] as const;
 
 export default function Footer() {
@@ -19,7 +20,9 @@ export default function Footer() {
       <div className="absolute -right-40 -top-40 h-[420px] w-[420px] rounded-full bg-accent/15 blur-3xl" />
       <div className="container-page relative grid gap-12 py-16 md:grid-cols-12">
         <div className="md:col-span-5">
-          <Logo light />
+          <Link href="/" aria-label="EventPro Seating home" className="inline-block">
+            <Image src="/logo.png" alt="EventPro Seating" width={220} height={101} className="h-auto w-[200px]" />
+          </Link>
           <p className="mt-5 max-w-sm text-sm leading-relaxed text-white/60">{site.description}</p>
           <div className="mt-6 flex flex-col gap-1 text-sm text-white/70">
             <a href={site.phoneHref} className="w-fit font-semibold text-white hover:text-accent">

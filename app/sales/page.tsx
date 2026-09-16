@@ -78,14 +78,14 @@ export default function SalesPage() {
             ))}
           </ul>
           <Reveal delay={0.2}>
-            <Link href="/blog/own-your-region-territorial-exclusivity" className="btn btn-ghost mt-8">
+            <Link href="/blog/territorial-exclusivity-market-share" className="btn btn-ghost mt-8">
               Read about the program →
             </Link>
           </Reveal>
         </div>
         <Reveal delay={0.1}>
-          <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] sm:aspect-[4/3] lg:aspect-[4/5]">
-            <Photo src={assetManifest.sales.fleet} alt="A fleet of EventPro bleachers ready to tow" />
+          <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem]">
+            <Photo src={assetManifest.sales.fleet} alt="Towing an EventPro Event Deck to the venue" />
           </div>
         </Reveal>
       </section>

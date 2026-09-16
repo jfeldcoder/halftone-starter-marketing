@@ -130,7 +130,7 @@ export default function QuoteForm() {
               </button>
             </div>
             {status === "error" && (
-              <p className="text-sm text-red-600 sm:col-span-2">Something went wrong. Please call us at (888) 404-3130 or email info@eventproseating.com.</p>
+              <p className="text-sm text-red-600 sm:col-span-2">Something went wrong. Please call us at (888) 404-3130.</p>
             )}
           </motion.form>
         )}

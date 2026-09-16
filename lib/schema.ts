@@ -11,7 +11,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || site.url;
 
 export function organizationSchema(): Record<string, unknown> {
   const s = site.seo;
-  const sameAs = [site.socials.instagram, site.socials.x, site.socials.linkedin].filter(Boolean);
+  const sameAs = [site.socials.instagram, site.socials.facebook, site.socials.linkedin, site.socials.x].filter(Boolean);
 
   const schema: Record<string, unknown> = {
     "@context": "https://schema.org",

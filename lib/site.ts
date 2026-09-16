@@ -15,7 +15,8 @@ export const site = {
   cta: { label: "Get a quote", href: "/contact" },
 
   // Contact.
-  email: "info@eventproseating.com",
+  // The current site lists no public email (contact is by phone + form). Leave empty to hide.
+  email: "",
   phone: "(888) 404-3130",
   phoneHref: "tel:+18884043130",
   address: {
@@ -46,8 +47,9 @@ export const site = {
   // Footer socials (leave a value empty to hide it).
   socials: {
     instagram: "https://www.instagram.com/eventproseating/",
-    x: "",
+    facebook: "https://www.facebook.com/profile.php?id=61559640423809",
     linkedin: "https://www.linkedin.com/company/eventpro-seating",
+    x: "",
   },
 
   // ── SEO / structured data ──
