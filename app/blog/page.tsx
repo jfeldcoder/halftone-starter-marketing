@@ -20,7 +20,7 @@ export default function BlogPage() {
   const [featured, ...rest] = posts;
   return (
     <>
-      <section className="mx-auto max-w-content px-gutter pb-12 pt-28 lg:px-8 lg:pb-16 lg:pt-40">
+      <section className="mx-auto max-w-content px-gutter pb-12 pt-28 lg:px-8 lg:pb-16 lg:pt-52">
         <Reveal>
           <p className="kicker text-accent-dark">Insights</p>
           <h1 className="type-display mt-3 text-[clamp(2.6rem,7vw,6rem)] text-fg">

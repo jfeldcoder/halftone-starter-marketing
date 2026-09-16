@@ -37,7 +37,7 @@ export default async function ProductPage({ params }: Params) {
   return (
     <>
       {/* Title + photo */}
-      <section className="mx-auto max-w-content px-gutter pt-28 lg:px-8 lg:pt-40">
+      <section className="mx-auto max-w-content px-gutter pt-28 lg:px-8 lg:pt-52">
         <Reveal>
           <p className="kicker text-accent-dark">{p.kicker}</p>
           <h1 className="type-display mt-3 text-[clamp(2.6rem,7vw,6rem)] text-fg">

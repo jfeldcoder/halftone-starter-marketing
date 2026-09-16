@@ -29,7 +29,7 @@ export default async function PostPage({ params }: Params) {
   return (
     <>
       <article>
-        <div className="mx-auto max-w-content px-gutter pt-28 lg:px-8 lg:pt-40">
+        <div className="mx-auto max-w-content px-gutter pt-28 lg:px-8 lg:pt-52">
           <Reveal className="max-w-4xl">
             <Link href="/blog" className="link-arrow">
               ← All articles
