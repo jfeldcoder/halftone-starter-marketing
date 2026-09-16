@@ -1,4 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="7" fill="#4f46e5" />
-  <circle cx="16" cy="16" r="6" fill="#ffffff" />
+  <rect width="32" height="32" rx="7" fill="#171411"/>
+  <g transform="translate(4 7) scale(0.0156)">
+    <path fill="#f4a62a" d="M85 0 H535 L450 120 H0 Z"/>
+    <path fill="#f4a62a" d="M85 175 H495 L410 295 H0 Z"/>
+    <path fill="#f4a62a" d="M85 350 H455 L370 470 H0 Z"/>
+    <path fill="#e9d3b0" fill-rule="evenodd" d="M565 0 H900 A135 135 0 0 1 900 270 H665 V470 H520 V122 H490 Z M669 120 H861 A29 29 0 0 1 861 178 H669 A29 29 0 0 1 669 120 Z"/>
+    <path fill="#f4a62a" d="M1520 0 H1220 A150 150 0 0 0 1220 300 H1360 A30 30 0 0 1 1360 360 H850 L760 480 H1360 A150 150 0 0 0 1360 180 H1220 A30 30 0 0 1 1220 120 H1520 Z"/>
+  </g>
 </svg>

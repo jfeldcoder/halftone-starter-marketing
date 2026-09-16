@@ -1,59 +1,67 @@
 /**
- * ── EDIT THIS FILE FIRST for every new client. ──
- * It is the single source of truth for brand, copy, nav, and SEO.
- * Then rebrand colors/fonts in app/globals.css.
+ * ── Single source of truth for brand, copy, nav, and SEO. ──
+ * Colors/fonts live in app/globals.css and app/layout.tsx.
  */
 
 export const site = {
-  name: "Client Name",
-  // Short tagline shown in the hero and meta title.
-  tagline: "A one line promise about what this business does.",
-  // Longer description for SEO / social cards.
+  name: "EventPro Seating",
+  shortName: "EventPro",
+  tagline: "Premier bleacher systems for every event.",
   description:
-    "One or two sentences describing the business, who it serves, and why it is different.",
-  // Production URL (no trailing slash). Also set NEXT_PUBLIC_SITE_URL in the env.
-  url: "https://example.com",
+    "Patented, USA-made mobile bleachers and modular event decks that one person can set up in minutes. Rent or buy for sports, festivals, schools, and corporate events.",
+  url: "https://eventproseating.com",
 
   // Primary call to action.
-  cta: { label: "Get in touch", href: "#contact" },
+  cta: { label: "Get a quote", href: "/contact" },
 
   // Contact.
-  email: "hello@example.com",
-  phone: "",
+  email: "info@eventproseating.com",
+  phone: "(888) 404-3130",
+  phoneHref: "tel:+18884043130",
+  address: {
+    street: "720 Ponce De Leon Blvd",
+    city: "Brooksville",
+    region: "FL",
+    postalCode: "34601",
+  },
+  hours: "Mon–Fri, 8am–5pm ET",
 
   // Top nav links (in order).
   nav: [
-    { label: "Work", href: "#work" },
-    { label: "Services", href: "#services" },
-    { label: "About", href: "#about" },
-    { label: "Contact", href: "#contact" },
+    {
+      label: "Products",
+      href: "/products/3-row-bleachers",
+      children: [
+        { label: "3 Row Bleachers", href: "/products/3-row-bleachers", note: "15 seats · 5 min setup" },
+        { label: "10 Row Bleachers", href: "/products/10-row-bleachers", note: "160 seats · 15 min setup" },
+        { label: "Event Deck", href: "/products/event-deck", note: "Modular VIP + production platform" },
+      ],
+    },
+    { label: "Sales", href: "/sales" },
+    { label: "About", href: "/about" },
+    { label: "Blog", href: "/blog" },
+    { label: "Contact", href: "/contact" },
   ],
 
   // Footer socials (leave a value empty to hide it).
   socials: {
-    instagram: "",
+    instagram: "https://www.instagram.com/eventproseating/",
     x: "",
-    linkedin: "",
+    linkedin: "https://www.linkedin.com/company/eventpro-seating",
   },
 
   // ── SEO / structured data ──
-  // Powers the JSON-LD (lib/schema.ts) + metadata. Fill per client.
   seo: {
-    // "Organization" by default (works for any business). If the client has a physical
-    // storefront, switch to a LocalBusiness subtype ("Store", "Restaurant",
-    // "ProfessionalService", …) and fill the address block below.
-    schemaType: "Organization",
-    // Social + share image at /public (1200x630). Used for OpenGraph + schema logo. Leave "" to skip.
-    image: "",
-    // ── Physical location (leave blank for a non-local / online business) ──
-    streetAddress: "",
-    city: "",
-    region: "", // state, e.g. "FL"
-    postalCode: "",
+    schemaType: "LocalBusiness",
+    image: "/images/og.jpg",
+    streetAddress: "720 Ponce De Leon Blvd",
+    city: "Brooksville",
+    region: "FL",
+    postalCode: "34601",
     country: "US",
-    geo: { latitude: "", longitude: "" },
-    priceRange: "", // only meaningful for LocalBusiness types
-    areaServed: [] as string[],
+    geo: { latitude: "28.5553", longitude: "-82.3879" },
+    priceRange: "$$$",
+    areaServed: ["United States"],
   },
 
   // Credit line in the footer.
@@ -61,3 +69,4 @@ export const site = {
 } as const;
 
 export type Site = typeof site;
+export type NavItem = (typeof site.nav)[number];

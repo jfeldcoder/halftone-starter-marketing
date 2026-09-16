@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
-import { Inter, Fraunces } from "next/font/google";
+import { Manrope, Inter_Tight } from "next/font/google";
 import { site } from "@/lib/site";
 import { organizationSchema } from "@/lib/schema";
 import JsonLd from "@/components/JsonLd";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import Splash from "@/components/Splash";
+import ScrollProgress from "@/components/ScrollProgress";
 import "./globals.css";
 
-// Swap these for the client's brand fonts. Keep the CSS variable names.
-const sans = Inter({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
-const display = Fraunces({ subsets: ["latin"], variable: "--font-display", display: "swap" });
+const sans = Manrope({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
+const display = Inter_Tight({ subsets: ["latin"], variable: "--font-display", display: "swap" });
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || site.url;
 const ogImages = site.seo.image ? [{ url: site.seo.image }] : undefined;
@@ -23,23 +24,9 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-      "max-video-preview": -1,
-    },
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 },
   },
-  openGraph: {
-    title: site.name,
-    description: site.description,
-    url: SITE_URL,
-    siteName: site.name,
-    locale: "en_US",
-    type: "website",
-    images: ogImages,
-  },
+  openGraph: { title: site.name, description: site.description, url: SITE_URL, siteName: site.name, locale: "en_US", type: "website", images: ogImages },
   twitter: { card: "summary_large_image", title: site.name, description: site.description, images: ogImages },
 };
 
@@ -48,6 +35,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${sans.variable} ${display.variable}`}>
       <body>
         <JsonLd data={organizationSchema()} />
+        <Splash />
+        <ScrollProgress />
         <Nav />
         <main>{children}</main>
         <Footer />
