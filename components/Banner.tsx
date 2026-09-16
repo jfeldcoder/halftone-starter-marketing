@@ -9,7 +9,7 @@ export type Slide = { kicker: string; quote: string; image: string | null };
 const ROTATE_MS = 5600;
 
 /** Full-width photo band with auto-rotating statements. */
-export default function Banner({ slides, height = "h-[26rem] sm:h-[32rem]" }: { slides: Slide[]; height?: string }) {
+export default function Banner({ slides, height = "h-[26rem] sm:h-[32rem]", soft = false }: { slides: Slide[]; height?: string; soft?: boolean }) {
   const [i, setI] = useState(0);
   const reduce = useReducedMotion();
 
@@ -22,7 +22,7 @@ export default function Banner({ slides, height = "h-[26rem] sm:h-[32rem]" }: { 
   const slide = slides[i];
 
   return (
-    <section className={`relative overflow-hidden border-y border-line ${height}`} aria-label="Highlights">
+    <section className={`relative overflow-hidden ${soft ? "" : "border-y border-line"} ${height}`} aria-label="Highlights">
       <AnimatePresence mode="popLayout">
         <motion.div
           key={i}
@@ -41,6 +41,12 @@ export default function Banner({ slides, height = "h-[26rem] sm:h-[32rem]" }: { 
         </motion.div>
       </AnimatePresence>
 
+      {soft && (
+        <>
+          <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 z-[5] h-32 bg-gradient-to-b from-bg to-transparent" />
+          <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-32 bg-gradient-to-t from-bg to-transparent" />
+        </>
+      )}
       <div className="relative z-10 flex h-full flex-col items-center justify-center px-gutter text-center">
         <AnimatePresence mode="wait">
           <motion.div
