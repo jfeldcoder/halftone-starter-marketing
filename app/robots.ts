@@ -1,5 +1,4 @@
 import type { MetadataRoute } from "next";
-import { site } from "@/lib/site";
 import { SITE_URL } from "@/lib/url";
 
 
