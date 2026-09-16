@@ -1,46 +1,37 @@
 @import "tailwindcss";
 
 /* ============================================================
-   Design tokens — REBRAND HERE for each client.
-   Change the hex values below; components read the tokens, so a
-   whole site re-themes from this one block.
+   Design tokens — clean + premium. Swap the accent for the
+   client's brand color once the logo is in hand.
    ============================================================ */
 
 :root {
-  /* Base ramp (light) */
   --bg: #ffffff;
-  --bg-elev: #f6f6f4;
-  --surface: #f0f0ee;
-  --line: #e3e3df;
-  --fg: #16161a;
-  --fg-muted: #55555f;
-  --fg-faint: #8a8a94;
+  --bg-elev: #faf8f4;
+  --surface: #f3eee5;
+  --line: #e9e3d8;
+  --fg: #171411;
+  --fg-muted: #5b5650;
+  --fg-faint: #948d83;
 
-  /* Accent — the one brand color */
-  --accent: #4f46e5;
-  --accent-light: #6d64f0;
-  --accent-dark: #3b32c4;
-  --on-accent: #ffffff;
+  /* Brand: EventPro orange + sand, taken from the live site's theme CSS (hsl 35.68 86.85% 58.24% / hsl 33.6 51.02% 80.78%). */
+  --accent: #f1a638;
+  --accent-light: #f5bb62;
+  --accent-dark: #d68a15;
+  --on-accent: #1c1305;
+  --sand: #e7d1b5;
+  --sand-light: #f3e8d8;
 
-  /* Motion + safe areas */
+  /* Dark "ink" sections + aluminum highlight used in illustrations. */
+  --ink: #171411;
+  --ink-elev: #221e19;
+  --ink-line: #3a332b;
+  --alu: #d4d7dc;
+  --alu-dark: #8e939c;
+
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --safe-t: env(safe-area-inset-top, 0px);
   --safe-b: env(safe-area-inset-bottom, 0px);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0b0b0d;
-    --bg-elev: #131316;
-    --surface: #191920;
-    --line: #26262e;
-    --fg: #f4f4f6;
-    --fg-muted: #a0a0aa;
-    --fg-faint: #63636e;
-    --accent: #7c74ff;
-    --accent-light: #9b95ff;
-    --accent-dark: #5b52e8;
-  }
 }
 
 @theme inline {
@@ -55,6 +46,13 @@
   --color-accent-light: var(--accent-light);
   --color-accent-dark: var(--accent-dark);
   --color-on-accent: var(--on-accent);
+  --color-sand: var(--sand);
+  --color-sand-light: var(--sand-light);
+  --color-ink: var(--ink);
+  --color-ink-elev: var(--ink-elev);
+  --color-ink-line: var(--ink-line);
+  --color-alu: var(--alu);
+  --color-alu-dark: var(--alu-dark);
 
   --font-sans: var(--font-sans);
   --font-display: var(--font-display);
@@ -74,27 +72,35 @@ body {
   font-family: var(--font-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  overflow-x: clip;
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--accent) 25%, transparent);
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
 }
 
-/* Small shared helpers */
+/* Shared helpers */
 .display {
   font-family: var(--font-display), var(--font-sans), sans-serif;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
 }
 .eyebrow {
   font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--fg-faint);
 }
+.eyebrow-accent {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
 .container-page {
   width: 100%;
-  max-width: 72rem;
+  max-width: 76rem;
   margin-inline: auto;
   padding-inline: 1.25rem;
 }
@@ -104,27 +110,130 @@ body {
   }
 }
 
-/* On-load reveal used by <Reveal>. Content is visible by default; the animation
-   only enhances it, so no-JS and crawlers always see the content. */
-@keyframes reveal-in {
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  padding: 0.9rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1;
+  transition: transform 0.25s var(--ease-out), background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.25s;
+  will-change: transform;
+}
+.btn:active {
+  transform: scale(0.98);
+}
+.btn-primary {
+  background: var(--accent);
+  color: var(--on-accent);
+  box-shadow: 0 8px 24px -10px color-mix(in srgb, var(--accent) 70%, transparent);
+}
+.btn-primary:hover {
+  background: var(--accent-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 14px 30px -10px color-mix(in srgb, var(--accent) 70%, transparent);
+}
+.btn-ghost {
+  border: 1px solid var(--line);
+  color: var(--fg);
+  background: transparent;
+}
+.btn-ghost:hover {
+  border-color: var(--fg);
+  transform: translateY(-1px);
+}
+.btn-ink {
+  background: var(--ink);
+  color: #fff;
+}
+.btn-ink:hover {
+  background: var(--ink-elev);
+  transform: translateY(-1px);
+}
+.on-ink .btn-ghost {
+  border-color: var(--ink-line);
+  color: #fff;
+}
+.on-ink .btn-ghost:hover {
+  border-color: #fff;
+}
+
+/* Cards */
+.card {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 1.25rem;
+  transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out), border-color 0.3s;
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 30px 60px -30px rgb(11 18 32 / 0.25);
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
+}
+
+/* Subtle dotted grid background */
+.bg-grid {
+  background-image: radial-gradient(color-mix(in srgb, var(--fg) 9%, transparent) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+.bg-grid-ink {
+  background-image: radial-gradient(rgb(255 255 255 / 0.08) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* Gradient text */
+.text-gradient {
+  background: linear-gradient(100deg, var(--fg) 0%, var(--accent-dark) 55%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Marquee */
+@keyframes marquee {
   from {
-    opacity: 0;
-    transform: translateY(16px);
+    transform: translateX(0);
   }
   to {
-    opacity: 1;
-    transform: none;
+    transform: translateX(-50%);
   }
 }
-.reveal {
-  animation: reveal-in 0.5s var(--ease-out) both;
+.marquee-track {
+  animation: marquee 38s linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* Image placeholder stripes (used until real photos are dropped in) */
+.placeholder-stripes {
+  background-color: var(--surface);
+  background-image: repeating-linear-gradient(
+    135deg,
+    transparent 0 14px,
+    color-mix(in srgb, var(--fg) 4%, transparent) 14px 15px
+  );
+}
+
+/* Splash */
+@keyframes splash-line {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-  .reveal {
+  .marquee-track {
     animation: none;
   }
   *,

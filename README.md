@@ -1,73 +1,74 @@
-# Halftone client starter · Marketing / brochure tier
+# EventPro Seating — website
 
-The **quick, low-effort** tier: a clean Next.js 16 + Tailwind v4 + TypeScript
-brochure site for a business that needs a credible presence fast. Mostly static,
-brandable from two files, deploy-ready on Vercel.
+Pitch build for [eventproseating.com](https://eventproseating.com): Next.js 16 + Tailwind v4 +
+framer-motion, deploy-ready on Vercel.
 
-For local service businesses that need a service menu, booking/inquiry flow, gallery,
-and reviews (med spas, salons, clinics), use the **local-service** starter instead.
+## Run it
 
-## Start a new client (5 minutes)
-
-1. **Create the project from this template.** On GitHub, click **Use this template**
-   → name it `client-<name>` (e.g. `client-yumori`). Or locally:
-   ```bash
-   cp -R starter clients/<name> && cd clients/<name>
-   rm -rf .git && git init
-   ```
-2. **Install & run:**
-   ```bash
-   npm install
-   npm run dev
-   ```
-3. **Rebrand — edit two files:**
-   - `lib/site.ts` — name, tagline, description, nav, contact, socials, URL.
-   - `app/globals.css` — the `:root` tokens (colors) and the fonts in `app/layout.tsx`.
-4. **Build the pages.** Replace the placeholder sections in `app/page.tsx`, add routes
-   under `app/`, and drop shared UI in `components/`.
-5. **Deploy.** Push to GitHub, import into Vercel, set `NEXT_PUBLIC_SITE_URL`, add the
-   client's domain.
-
-## What's inside
-
-```
-app/
-  layout.tsx      root layout: fonts + SEO metadata + JSON-LD (reads lib/site.ts)
-  page.tsx        homepage: hero, proof, services, about, CTA (placeholder copy)
-  globals.css     design tokens (REBRAND HERE) + base styles + helpers
-  sitemap.ts      /sitemap.xml
-  robots.ts       /robots.txt
-  icon.svg        favicon (swap for the client's mark)
-components/
-  Nav.tsx         sticky nav with mobile menu
-  Footer.tsx      footer with contact + socials + credit
-  JsonLd.tsx      renders schema.org JSON-LD
-  Reveal.tsx      on-load fade/rise wrapper (pure CSS, no-JS safe)
-lib/
-  site.ts         ← single source of truth for brand + copy + seo
-  schema.ts       Organization / LocalBusiness structured data (built from site.ts)
-  cn.ts           className helper (clsx)
+```bash
+npm install
+npm run dev      # http://localhost:3000
+npm run build    # production build (also runs type-check)
+npm run lint
 ```
 
-## SEO — ships SEO-ready
+## Pages
 
-Every build gets the on-page/technical basics for free: canonical URL, explicit robots +
-rich-snippet hints, OpenGraph/Twitter cards, `sitemap.xml`, `robots.txt`, and **schema.org
-JSON-LD** (`lib/schema.ts` → injected in `layout.tsx`).
+| Route | What's there |
+| --- | --- |
+| `/` | Logo-reveal splash (once per session), animated hero, stats counters, product lineup, "How to profit" grid with the original icons, scroll-drawn process timeline, gallery with lightbox, proof band, blog teaser, CTA |
+| `/products/3-row-bleachers`, `/products/10-row-bleachers`, `/products/event-deck` | Product pages: hero, key numbers, features, use cases, spec table, gallery, related products |
+| `/sales` | Rent vs. Buy toggle, interactive seating planner (capacity + setup time, sends config to the form), territory program, purchase process, FAQ |
+| `/about` | Story, timeline, values, HQ, full FAQ accordion (`/about#faq`) |
+| `/blog`, `/blog/[slug]` | All 15 articles from the current blog, with headings, dates, categories, and author |
+| `/contact` | Quote form (pre-fills from planner/product links) → `/api/quote` |
 
-Defaults to **Organization** (name, url, description, logo, socials `sameAs`, contact point) —
-fine for any business. If the client has a **physical storefront**, set a LocalBusiness
-`schemaType` (e.g. `Store`, `ProfessionalService`) and fill the address/geo/areaServed block
-in `lib/site.ts` → it then emits full LocalBusiness data too. Add `/public/og.jpg` (1200×630)
-and set `NEXT_PUBLIC_SITE_URL`. Validate with Google's Rich Results Test after deploy.
+Plus `/sitemap.xml`, `/robots.txt`, schema.org LocalBusiness JSON-LD, OpenGraph tags, custom 404.
 
-## Conventions
+## Photos and logo
 
-- **Colors come from tokens**, never hardcoded hex in components. Change a brand by
-  editing `:root` in `globals.css`. Dark mode is wired via `prefers-color-scheme`.
-- **Tailwind v4** reads those tokens through `@theme inline`, so classes like
-  `bg-bg`, `text-fg-muted`, `bg-accent` map to the brand automatically.
-- **One config file** (`lib/site.ts`) drives nav, footer, meta, and CTAs.
-- Accessible by default: reduced-motion handling, focusable controls, semantic landmarks.
+All photography and the logo were pulled from the current eventproseating.com (Squarespace) site,
+normalized to 1800px JPEGs, and placed in `public/images`. Slots are mapped in `lib/assets.ts`;
+`components/Photo.tsx` renders a labeled placeholder for any slot whose file is missing, so you can
+swap or add photos by file name with no code changes.
 
-Built and maintained by Halftone.
+```
+public/
+  logo.png                      full logo (mark + wordmark), used on dark backgrounds (splash, footer)
+  logo-mark@2x.png              EPS mark only, used in the nav
+  images/og.jpg                 1200×630 social share image
+  images/home/                  hero, about, gallery-1…6
+  images/products/3-row/        hero, gallery-1…4, trailer-1…4 (3×3 Row trailer variant)
+  images/products/10-row/       hero, gallery-1…6
+  images/products/event-deck/   hero, gallery-1…6
+  images/about/                 team (manufacturing floor), facility (full lineup)
+  images/sales/                 fleet, all-products
+  images/blog/<slug>.jpg        one per post (15 posts ported from the live blog)
+  images/icons/                 the five "How to profit" icons from the current homepage
+```
+
+## Brand
+
+- Colors: `app/globals.css` `:root` block. Accent orange `#f1a638` and sand `#e7d1b5` are the exact values from the current site's theme CSS.
+- Fonts: `app/layout.tsx` (Manrope body, Inter Tight display).
+- Copy, nav, contact, SEO: `lib/site.ts`. Products + specs (from the live product pages): `lib/products.ts`.
+  Stats, profit points, proof, FAQ, timeline: `lib/content.ts`. Blog posts (ported verbatim): `lib/posts.ts`.
+
+> Product specs, dimensions, and blog copy come straight from the current site. The FAQ, process,
+> and timeline copy are new and should be read over by the client before launch.
+
+## Motion
+
+- `components/Splash.tsx` — plays once per browser session (`sessionStorage`), click to skip,
+  disabled for `prefers-reduced-motion`.
+- `components/BleacherIllustration.tsx` — SVG bleacher / event deck that assembles row by row.
+- `app/template.tsx` — page transitions. `components/ScrollProgress.tsx` — top progress bar.
+- `Reveal`, `Counter`, `ProcessSteps`, `Gallery`, `FAQ`, `RentBuy`, `Configurator` are the interactive pieces.
+
+## Deploy to Vercel
+
+1. Push to GitHub, import the repo in Vercel (framework auto-detects Next.js).
+2. Set `NEXT_PUBLIC_SITE_URL` (e.g. `https://eventproseating.com` or the preview URL).
+3. Optional: `RESEND_API_KEY`, `QUOTE_TO_EMAIL`, `QUOTE_FROM_EMAIL` so the quote form emails the
+   client. Without them the form still succeeds and logs to the function console.
+4. Add the domain when the client signs off.
