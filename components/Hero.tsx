@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { site } from "@/lib/site";
 
 /** Full-bleed photo hero, copy bottom-left, nav floats over the top. */
 export default function Hero({ image }: { image: string | null }) {
@@ -48,17 +47,6 @@ export default function Hero({ image }: { image: string | null }) {
             See the lineup
           </Link>
         </motion.div>
-        <motion.ul
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.7, duration: 0.6 }}
-          className="mono mt-10 flex flex-wrap gap-x-8 gap-y-2 border-t border-white/15 pt-5 text-[0.65rem] uppercase tracking-[0.22em] text-white/60"
-        >
-          <li>3 Row · 15 seats · 5 min</li>
-          <li>10 Row · 160 seats · 15 min</li>
-          <li>Event Deck · 120 guests · 1 hr</li>
-          <li className="hidden sm:block">{site.phone}</li>
-        </motion.ul>
       </div>
     </section>
   );
