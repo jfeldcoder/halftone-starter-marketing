@@ -52,18 +52,29 @@ export default function SplitSection({
           {soft && (
             <>
               <div aria-hidden className={cn("pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-bg to-transparent lg:h-40", heading && "hidden lg:block")} />
-              <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-bg to-transparent lg:h-40" />
+              <div aria-hidden className={cn("pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-bg to-transparent lg:h-40", heading && "hidden lg:block")} />
             </>
           )}
           {heading && (
-            <div className="absolute inset-x-0 top-0 lg:hidden">
-              <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-scrim/90 via-scrim/55 to-transparent" />
-              <Reveal className="relative px-gutter pb-24 pt-8">
-                {heading.kicker && <p className="kicker text-accent">{heading.kicker}</p>}
-                <h2 className="type-display mt-3 text-[clamp(1.9rem,8vw,3rem)] text-white">{heading.title}</h2>
-                {heading.lead && <p className="mt-4 max-w-md text-[0.95rem] leading-relaxed text-white/80">{heading.lead}</p>}
-              </Reveal>
-            </div>
+            <>
+              {/* Phones: kicker + title at the top of the photo */}
+              <div className="absolute inset-x-0 top-0 lg:hidden">
+                <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-scrim/85 via-scrim/45 to-transparent" />
+                <Reveal className="relative px-gutter pb-20 pt-8">
+                  {heading.kicker && <p className="kicker text-accent">{heading.kicker}</p>}
+                  <h2 className="type-display mt-3 text-[clamp(1.9rem,8vw,3rem)] text-white">{heading.title}</h2>
+                </Reveal>
+              </div>
+              {/* Phones: lead at the bottom of the photo */}
+              {heading.lead && (
+                <div className="absolute inset-x-0 bottom-0 lg:hidden">
+                  <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-scrim/85 via-scrim/45 to-transparent" />
+                  <Reveal className="relative px-gutter pb-7 pt-20">
+                    <p className="max-w-md text-[0.95rem] leading-relaxed text-white/85">{heading.lead}</p>
+                  </Reveal>
+                </div>
+              )}
+            </>
           )}
         </div>
         <div className={cn("flex flex-col justify-center px-gutter py-10 lg:px-14 lg:py-24", flip ? "lg:order-1" : "lg:order-2")}>
