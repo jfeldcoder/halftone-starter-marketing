@@ -31,15 +31,26 @@ export default function BlogPage() {
 
       <section className="mx-auto max-w-content px-gutter pb-20 lg:px-8 lg:pb-28">
         <Reveal>
-          <Link href={`/blog/${featured.slug}`} className="group grid gap-8 border-y border-line py-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
-            <div className="relative aspect-[16/9] overflow-hidden bg-surface">
+          <Link href={`/blog/${featured.slug}`} className="group grid gap-6 border-y border-line py-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center lg:gap-8">
+            <div className="relative aspect-[4/5] overflow-hidden bg-surface sm:aspect-[16/9]">
               <Photo src={featured.image} alt={featured.title} sizes="(min-width: 1024px) 60vw, 100vw" className="transition-transform duration-700 group-hover:scale-105" priority />
+              <div className="absolute inset-x-0 top-0 lg:hidden">
+                <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-scrim/85 via-scrim/45 to-transparent" />
+                <div className="relative px-gutter pb-20 pt-6">
+                  <p className="kicker text-accent">{featured.categories[0]} · Latest</p>
+                  <h2 className="type-display mt-3 text-[clamp(1.6rem,7vw,2.6rem)] text-white">{featured.title}</h2>
+                </div>
+              </div>
+              <div className="absolute inset-x-0 bottom-0 lg:hidden">
+                <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-scrim/85 via-scrim/45 to-transparent" />
+                <p className="relative px-gutter pb-6 pt-20 text-[0.95rem] leading-relaxed text-white/85">{featured.excerpt}</p>
+              </div>
             </div>
             <div>
-              <p className="kicker text-accent-dark">{featured.categories[0]} · Latest</p>
-              <h2 className="type-display mt-3 text-[clamp(1.8rem,3.6vw,3rem)] text-fg transition-colors group-hover:text-accent-dark">{featured.title}</h2>
-              <p className="mt-4 max-w-md text-[0.95rem] leading-relaxed text-fg-muted">{featured.excerpt}</p>
-              <p className="kicker mt-6 font-normal text-fg-faint">
+              <p className="kicker hidden text-accent-dark lg:block">{featured.categories[0]} · Latest</p>
+              <h2 className="type-display mt-3 hidden text-[clamp(1.8rem,3.6vw,3rem)] text-fg transition-colors group-hover:text-accent-dark lg:block">{featured.title}</h2>
+              <p className="mt-4 hidden max-w-md text-[0.95rem] leading-relaxed text-fg-muted lg:block">{featured.excerpt}</p>
+              <p className="kicker font-normal text-fg-faint lg:mt-6">
                 {featured.author} · {fmt(featured.date)}
               </p>
             </div>
