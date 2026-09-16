@@ -13,6 +13,7 @@ export default function SplitSection({
   tone = "light",
   position = "50% 50%",
   id,
+  noTopRule = false,
 }: {
   image: string;
   alt: string;
@@ -21,12 +22,13 @@ export default function SplitSection({
   tone?: "light" | "elev" | "ink";
   position?: string;
   id?: string;
+  noTopRule?: boolean;
 }) {
   return (
     <section
       id={id}
       className={cn(
-        "border-y border-line",
+        noTopRule ? "border-b border-line" : "border-y border-line",
         tone === "elev" && "bg-bg-elev",
         tone === "ink" && "on-ink border-white/10 bg-ink text-white",
       )}
