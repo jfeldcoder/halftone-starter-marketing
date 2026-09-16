@@ -73,8 +73,11 @@ export default function Home() {
       <Banner slides={slides} />
 
       {/* Our commitment to excellence (from the live site), on olive */}
-      <section className="on-ink bg-ink text-white">
-        <div className="mx-auto max-w-content px-gutter py-20 lg:px-8 lg:py-28">
+      <section
+        className="on-ink text-white"
+        style={{ background: "linear-gradient(to bottom, var(--bg) 0%, var(--ink) 22%, var(--ink) 78%, var(--bg) 100%)" }}
+      >
+        <div className="mx-auto max-w-content px-gutter py-40 lg:px-8 lg:py-56">
           <SectionHeading kicker="Our commitment to excellence" title={<>Dependable seating<br />for every occasion<Dot /></>} light size="lg" />
           <div className="mt-14 grid gap-10 md:grid-cols-2 lg:grid-cols-4">
             {COMMITMENT.map((c, i) => (
@@ -91,7 +94,7 @@ export default function Home() {
       </section>
 
       {/* Made in the USA */}
-      <SplitSection image={assetManifest.about.team} alt="Bleacher frames on the manufacturing floor in Brooksville, Florida" position="50% 40%">
+      <SplitSection image={assetManifest.about.team} noTopRule alt="Bleacher frames on the manufacturing floor in Brooksville, Florida" position="50% 40%">
         <Reveal>
           <p className="kicker text-accent-dark">Made in the USA</p>
           <h2 className="type-display mt-4 text-[clamp(1.9rem,3.8vw,3.2rem)] text-fg">
