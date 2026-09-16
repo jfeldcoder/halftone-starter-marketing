@@ -6,8 +6,8 @@
  * this then also emits PostalAddress, geo, priceRange, and areaServed.
  */
 import { site } from "@/lib/site";
+import { SITE_URL } from "@/lib/url";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || site.url;
 
 export function organizationSchema(): Record<string, unknown> {
   const s = site.seo;

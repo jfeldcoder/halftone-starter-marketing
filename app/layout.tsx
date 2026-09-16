@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Barlow, Manrope, Space_Mono } from "next/font/google";
 import { site } from "@/lib/site";
+import { SITE_URL } from "@/lib/url";
 import { organizationSchema } from "@/lib/schema";
 import JsonLd from "@/components/JsonLd";
 import Nav from "@/components/Nav";
@@ -12,8 +13,7 @@ const display = Barlow({ subsets: ["latin"], weight: ["500", "600", "700"], vari
 const sans = Manrope({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
 const mono = Space_Mono({ subsets: ["latin"], weight: ["400", "700"], variable: "--font-mono", display: "swap" });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || site.url;
-const ogImages = site.seo.image ? [{ url: site.seo.image }] : undefined;
+const ogImages = site.seo.image ? [{ url: site.seo.image, width: 1200, height: 630, alt: "EventPro Seating 10 Row bleacher at a night event" }] : undefined;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

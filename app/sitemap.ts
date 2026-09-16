@@ -1,9 +1,9 @@
 import type { MetadataRoute } from "next";
 import { site } from "@/lib/site";
+import { SITE_URL } from "@/lib/url";
 import { products } from "@/lib/products";
 import { posts } from "@/lib/posts";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || site.url;
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
