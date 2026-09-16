@@ -113,17 +113,23 @@ export default async function ProductPage({ params }: Params) {
       {/* Trailer variant (3 Row only) */}
       {p.variant && (
         <>
-          <SplitSection image={p.variant.gallery[0]} alt={`${p.variant.name} on the trailer`} tone="elev">
-            <Reveal>
-              <p className="kicker text-accent-dark">{p.variant.name}</p>
-              <h2 className="type-display mt-4 text-[clamp(1.9rem,3.8vw,3.2rem)] text-fg">
-                More seating<Dot />
-                <br />
-                Maximum flexibility<Dot />
-              </h2>
-              <p className="mt-6 max-w-md text-[0.98rem] leading-relaxed text-fg-muted">{p.variant.intro}</p>
-            </Reveal>
-            <ul className="mt-8 flex flex-col divide-y divide-line border-y border-line">
+          <SplitSection
+            image={p.variant.gallery[0]}
+            alt={`${p.variant.name} on the trailer`}
+            tone="elev"
+            heading={{
+              kicker: p.variant.name,
+              title: (
+                <>
+                  More seating<Dot />
+                  <br />
+                  Maximum flexibility<Dot />
+                </>
+              ),
+              lead: p.variant.intro,
+            }}
+          >
+            <ul className="flex flex-col divide-y divide-line border-y border-line lg:mt-8">
               {p.variant.bullets.map((b, i) => (
                 <Reveal key={b} as="li" delay={i * 0.04}>
                   <div className="flex items-baseline gap-5 py-3.5">
