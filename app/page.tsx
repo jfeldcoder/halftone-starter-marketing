@@ -1,172 +1,232 @@
 import Link from "next/link";
-import HomeHero from "@/components/HomeHero";
-import Marquee from "@/components/Marquee";
-import Counter from "@/components/Counter";
-import Reveal from "@/components/Reveal";
-import SectionHeading from "@/components/SectionHeading";
-import ProductCard from "@/components/ProductCard";
-import ProcessSteps from "@/components/ProcessSteps";
-import Gallery from "@/components/Gallery";
-import CTABand from "@/components/CTABand";
+import Hero from "@/components/Hero";
+import Reveal, { Ticker } from "@/components/Reveal";
+import SectionHeading, { Dot } from "@/components/SectionHeading";
+import ProductTile from "@/components/ProductTile";
+import Banner from "@/components/Banner";
+import SplitSection from "@/components/SplitSection";
+import NumberedRows from "@/components/NumberedRows";
+import PhotoReel from "@/components/PhotoReel";
+import ClosingCTA from "@/components/ClosingCTA";
 import Photo from "@/components/Photo";
 import { products } from "@/lib/products";
-import Image from "next/image";
-import { stats, profit, proof } from "@/lib/content";
+import { profit } from "@/lib/content";
 import { posts } from "@/lib/posts";
 import { assetManifest, resolveAsset } from "@/lib/assets";
+
+const COMMITMENT = [
+  { k: "Dependable systems", v: "Top-tier bleacher and deck solutions for events of any scale, from a local gathering to a major sporting event." },
+  { k: "Customized support", v: "No two events are alike. From the first consultation to post-event follow-up, expert advice and responsive service whether you rent or buy." },
+  { k: "Innovative and adaptable", v: "Designed to meet the evolving demands of any event, with features that improve attendee comfort and the viewing experience." },
+  { k: "Made in the USA", v: "Engineered and manufactured in the USA for long-term reliability, whether you rent for a single event or purchase for many." },
+];
 
 const USE_CASES = ["Sporting events", "Graduations", "Festivals", "Concerts", "Schools", "Corporate events", "Motorsports", "Parades", "Fairs & expos", "Community centers"];
 
 export default function Home() {
-  const galleryItems = assetManifest.home.gallery.map((path, i) => ({
-    path,
-    src: resolveAsset(path),
-    alt: ["Event Deck at a festival", "10 Row on a football field", "Fans on a 3 Row at a stadium", "3 Row under the palms", "Event Deck at a county fair", "10 Row packed for a night event"][i],
-    span: i === 0 ? ("wide" as const) : i === 3 ? ("tall" as const) : undefined,
-  }));
+  const slides = [
+    { kicker: "3×3 Row Bleachers", quote: "$26K in a day. Proven revenue potential from one trailer.", image: resolveAsset(assetManifest.home.hero) },
+    { kicker: "10 Row Bleachers", quote: "160 guests seated in 15 minutes by a single individual.", image: resolveAsset(assetManifest.home.gallery[0]) },
+    { kicker: "Patent No. US 12,084,881 B1", quote: "Newly patented technology. Engineered and built in Brooksville, Florida.", image: resolveAsset(assetManifest.home.gallery[2]) },
+  ];
+
+  const reel = [
+    { src: resolveAsset("/images/home/gallery-4.jpg"), alt: "3 Row under the palms" },
+    { src: resolveAsset("/images/products/10-row/gallery-3.jpg"), alt: "10 Row on the sand" },
+    { src: resolveAsset("/images/products/event-deck/gallery-4.jpg"), alt: "Event Suite, nutrition lounge" },
+    { src: resolveAsset("/images/home/gallery-5.jpg"), alt: "Event Deck at the fair" },
+    { src: resolveAsset("/images/products/3-row/gallery-3.jpg"), alt: "3 Row courtside" },
+    { src: resolveAsset("/images/products/10-row/gallery-5.jpg"), alt: "10 Row, ready to unfold" },
+    { src: resolveAsset("/images/products/event-deck/gallery-6.jpg"), alt: "Event Deck folded for transport" },
+    { src: resolveAsset("/images/home/gallery-6.jpg"), alt: "10 Row at a night event" },
+  ];
 
   return (
     <>
-      <HomeHero image={resolveAsset(assetManifest.home.hero)} />
+      <Hero image={resolveAsset(assetManifest.home.heroAlt)} />
 
-      <Marquee items={USE_CASES} />
+      <Ticker items={USE_CASES} />
 
-      {/* Stats */}
-      <section className="container-page py-16 sm:py-20">
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {stats.map((s, i) => (
-            <Reveal key={s.label} delay={i * 0.07} className="border-l-2 border-accent pl-5">
-              <div className="display text-5xl font-extrabold text-fg">
-                <Counter value={s.value} suffix={s.suffix} />
-              </div>
-              <div className="mt-2 text-sm text-fg-muted">{s.label}</div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* Products */}
-      <section id="products" className="border-t border-line bg-bg-elev">
-        <div className="container-page py-20 sm:py-28">
-          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-            <SectionHeading eyebrow="The lineup" title="Three systems. Every crowd." lead="From a sideline bench to a festival grandstand, each system is engineered to be deployed by one person and moved to the next event." />
-            <Reveal delay={0.1}>
-              <Link href="/sales" className="btn btn-ghost">
-                Compare rent vs. buy →
+      {/* Lineup */}
+      <section>
+        <div className="mx-auto max-w-content px-gutter py-20 lg:px-8 lg:py-28">
+          <Reveal>
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <h2 className="type-display text-[clamp(2.2rem,5vw,4.2rem)] text-fg">
+                The
+                <br />
+                lineup<Dot />
+              </h2>
+              <Link href="/sales" className="link-arrow">
+                Rent or buy →
               </Link>
-            </Reveal>
-          </div>
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {products.map((p, i) => (
-              <ProductCard key={p.slug} product={p} image={resolveAsset(p.heroImage)} index={i} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* How to profit (from the current site) */}
-      <section className="container-page py-20 sm:py-28">
-        <SectionHeading eyebrow="How to profit with EventPro" title={<>Seating that shows up <span className="text-gradient">ready to unfold.</span></>} lead="Most temporary bleachers are still assembled from loose parts by a crew. Ours roll in on a chassis and lock into place, and every seat is revenue." />
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {profit.map((w, i) => (
-            <Reveal key={w.title} delay={i * 0.06}>
-              <div className="card card-hover flex h-full flex-col p-7">
-                <span className="flex h-14 w-14 items-center justify-center rounded-full bg-accent">
-                  <Image src={w.icon} alt="" width={32} height={32} className="h-8 w-8" />
-                </span>
-                <h3 className="display mt-5 text-2xl font-extrabold text-fg">{w.title}</h3>
-                <p className="mt-2 max-w-md text-[15px] leading-relaxed text-fg-muted">{w.body}</p>
-              </div>
-            </Reveal>
-          ))}
-          <Reveal delay={0.3}>
-            <div className="on-ink relative flex h-full flex-col justify-between overflow-hidden rounded-[1.25rem] bg-ink p-7 text-white">
-              <div className="bg-grid-ink absolute inset-0 opacity-30" />
-              <div className="relative">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/50">Rent or buy</p>
-                <p className="display mt-3 text-2xl font-extrabold">Purchase now, or rent today.</p>
-              </div>
-              <div className="relative mt-6 flex flex-col gap-2">
-                <Link href="/contact?interest=buy" className="btn btn-primary">
-                  Purchase now
-                </Link>
-                <Link href="/contact?interest=rent" className="btn btn-ghost">
-                  Rent today
-                </Link>
-              </div>
             </div>
           </Reveal>
-        </div>
-      </section>
-
-      {/* Process */}
-      <section className="border-y border-line bg-bg-elev">
-        <div className="container-page grid gap-12 py-20 sm:py-28 lg:grid-cols-2">
-          <div>
-            <SectionHeading eyebrow="How it works" title="From first call to folded away." lead="A simple process, whether you rent for a weekend or buy a fleet." />
-            <div className="relative mt-10 aspect-[4/3] overflow-hidden rounded-[2rem]">
-              <Photo src={assetManifest.home.about} alt="One person unfolding a trailer-mounted 3 Row bleacher" />
-            </div>
-          </div>
-          <div className="lg:pt-10">
-            <ProcessSteps />
-          </div>
-        </div>
-      </section>
-
-      {/* Gallery */}
-      <section className="container-page py-20 sm:py-28">
-        <SectionHeading eyebrow="In the field" title="Seen at fields, festivals, and finish lines." align="center" />
-        <div className="mt-12">
-          <Gallery items={galleryItems} />
-        </div>
-      </section>
-
-      {/* Proof */}
-      <section className="border-y border-line bg-ink text-white">
-        <div className="container-page py-20 sm:py-28">
-          <SectionHeading eyebrow="Proof, not promises" title="Numbers from the field." light />
-          <div className="mt-12 grid gap-px overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/10 md:grid-cols-3">
-            {proof.map((p, i) => (
-              <Reveal key={p.value} delay={i * 0.08} className="bg-ink p-8">
-                <div className="display text-3xl font-extrabold text-accent sm:text-4xl">{p.value}</div>
-                <div className="mt-1 text-sm font-semibold uppercase tracking-[0.14em] text-white/60">{p.label}</div>
-                <p className="mt-4 text-sm leading-relaxed text-white/60">{p.body}</p>
+          <div className="mt-10 grid gap-6 md:grid-cols-3 lg:gap-8">
+            {products.map((p, i) => (
+              <Reveal key={p.slug} delay={i * 0.06}>
+                <ProductTile product={p} image={resolveAsset(p.heroImage)} />
               </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Blog teaser */}
-      <section className="container-page py-20 sm:py-28">
-        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <SectionHeading eyebrow="Insights" title="From the blog." />
-          <Reveal delay={0.1}>
-            <Link href="/blog" className="btn btn-ghost">
-              All articles →
-            </Link>
-          </Reveal>
-        </div>
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {posts.slice(0, 3).map((p, i) => (
-            <Reveal key={p.slug} delay={i * 0.08}>
-              <Link href={`/blog/${p.slug}`} className="card card-hover group block h-full overflow-hidden">
-                <div className="relative aspect-[16/10]">
-                  <Photo src={p.image} alt={p.title} sizes="(min-width: 768px) 33vw, 100vw" className="transition-transform duration-700 group-hover:scale-105" />
+      <Banner slides={slides} />
+
+      {/* Our commitment to excellence (from the live site), on olive */}
+      <section className="on-ink bg-ink text-white">
+        <div className="mx-auto max-w-content px-gutter py-20 lg:px-8 lg:py-28">
+          <SectionHeading kicker="Our commitment to excellence" title={<>Dependable seating<br />for every occasion<Dot /></>} light size="lg" />
+          <div className="mt-14 grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+            {COMMITMENT.map((c, i) => (
+              <Reveal key={c.k} delay={i * 0.06}>
+                <div className="border-t border-accent pt-5">
+                  <p className="mono text-sm text-accent">{String(i + 1).padStart(2, "0")}</p>
+                  <p className="type-display mt-3 text-xl text-white">{c.k}</p>
+                  <p className="mt-3 text-[0.92rem] leading-relaxed text-white/65">{c.v}</p>
                 </div>
-                <div className="p-6">
-                  <span className="eyebrow-accent">{p.categories[0]}</span>
-                  <h3 className="display mt-2 text-xl font-extrabold leading-snug text-fg group-hover:text-accent-dark">{p.title}</h3>
-                  <p className="mt-2 text-sm text-fg-muted">{p.excerpt}</p>
-                </div>
-              </Link>
-            </Reveal>
-          ))}
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
 
-      <CTABand />
+      {/* Made in the USA */}
+      <SplitSection image={assetManifest.about.team} alt="Bleacher frames on the manufacturing floor in Brooksville, Florida" position="50% 40%">
+        <Reveal>
+          <p className="kicker text-accent-dark">Made in the USA</p>
+          <h2 className="type-display mt-4 text-[clamp(1.9rem,3.8vw,3.2rem)] text-fg">
+            Built in Brooksville,
+            <br />
+            Florida<Dot />
+          </h2>
+          <p className="mt-6 max-w-md text-[0.98rem] leading-relaxed text-fg-muted">
+            Over two decades of innovation in modular bleacher systems. Every unit is engineered and manufactured in our own facility, then put to work at events nationwide.
+          </p>
+        </Reveal>
+        <NumberedRows
+          className="mt-8 lg:mt-10"
+          rows={[
+            { title: "Patented fold-out design", sub: "No loose parts, no crew" },
+            { title: "ICC and NFPA compliant", sub: "Guardrails, closed risers, non-slip treads" },
+            { title: "Aluminum, built to last", sub: "Indoor and outdoor, year after year" },
+          ]}
+        />
+        <Reveal delay={0.2}>
+          <div className="mt-8 flex flex-wrap items-center gap-5 lg:mt-10">
+            <Link href="/about" className="btn btn-ink">
+              Our story
+            </Link>
+            <Link href="/about#faq" className="link-arrow">
+              Read the FAQ →
+            </Link>
+          </div>
+        </Reveal>
+      </SplitSection>
+
+      {/* Rent or own */}
+      <SplitSection image={assetManifest.sales.fleet} alt="Towing an EventPro Event Deck to the venue" flip position="50% 60%">
+        <Reveal>
+          <p className="kicker text-accent-dark">Sales and rentals</p>
+          <h2 className="type-display mt-4 text-[clamp(1.9rem,3.8vw,3.2rem)] text-fg">
+            Rent it for the weekend<Dot />
+            <br />
+            Or own the season<Dot />
+          </h2>
+          <p className="mt-6 max-w-md text-[0.98rem] leading-relaxed text-fg-muted">
+            Same patented systems either way. Rentals arrive on our trailers with our operator. Purchased systems tow behind a light-duty truck, so your crew brings them anywhere.
+          </p>
+        </Reveal>
+        <NumberedRows
+          className="mt-8 lg:mt-10"
+          rows={[
+            { title: "Rent today", sub: "Delivered, deployed, picked up" },
+            { title: "Purchase now", sub: "Pays for itself in a season" },
+            { title: "Own your region", sub: "Territory exclusivity for operators" },
+          ]}
+        />
+        <Reveal delay={0.2}>
+          <div className="mt-8 flex flex-wrap items-center gap-5 lg:mt-10">
+            <Link href="/sales" className="btn btn-primary">
+              Compare rent vs. buy
+            </Link>
+            <Link href="/contact" className="link-arrow">
+              Get a quote →
+            </Link>
+          </div>
+        </Reveal>
+      </SplitSection>
+
+      {/* In the field: horizontal reel */}
+      <section className="overflow-hidden py-20 lg:py-28">
+        <div className="mx-auto max-w-content px-gutter lg:px-8">
+          <Reveal>
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <h2 className="type-display text-[clamp(2.2rem,5.5vw,4.5rem)] text-fg">
+                Fields<Dot /> Festivals<Dot />
+                <br />
+                Finish lines<Dot />
+              </h2>
+              <p className="kicker font-normal text-fg-muted">Scroll sideways</p>
+            </div>
+          </Reveal>
+        </div>
+        <div className="mt-10">
+          <PhotoReel items={reel} />
+        </div>
+      </section>
+
+      {/* How to profit */}
+      <section className="border-t border-line bg-bg-elev">
+        <div className="mx-auto grid max-w-content gap-12 px-gutter py-20 lg:grid-cols-[0.8fr_1.2fr] lg:px-8 lg:py-28">
+          <SectionHeading kicker="How to profit with EventPro" title={<>More seats<Dot /> More tickets<Dot /></>} lead="Systems ready in moments save time and labor. Every seat you add is revenue you keep." />
+          <div className="flex flex-col divide-y divide-line border-y border-line">
+            {profit.map((w, i) => (
+              <Reveal key={w.title} delay={i * 0.05}>
+                <div className="grid gap-2 py-5 sm:grid-cols-[3rem_1fr] lg:py-6">
+                  <p className="mono text-sm text-accent-dark">{String(i + 1).padStart(2, "0")}</p>
+                  <div>
+                    <p className="type-display text-xl text-fg sm:text-2xl">{w.title}</p>
+                    <p className="mt-2 max-w-xl text-[0.95rem] leading-relaxed text-fg-muted">{w.body}</p>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <ClosingCTA image="/images/home/gallery-6.jpg" title={<>Seat the crowd<Dot /><br />Skip the crew<Dot /></>} />
+
+      {/* Latest from the blog */}
+      <section className="border-t border-line">
+        <div className="mx-auto max-w-content px-gutter py-20 lg:px-8 lg:py-28">
+          <Reveal>
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <h2 className="type-display text-[clamp(1.9rem,4.2vw,3.4rem)] text-fg">
+                From the blog<Dot />
+              </h2>
+              <Link href="/blog" className="link-arrow">
+                All articles →
+              </Link>
+            </div>
+          </Reveal>
+          <div className="mt-10 grid gap-8 md:grid-cols-3">
+            {posts.slice(0, 3).map((p, i) => (
+              <Reveal key={p.slug} delay={i * 0.06}>
+                <Link href={`/blog/${p.slug}`} className="group block">
+                  <div className="relative aspect-[16/10] overflow-hidden bg-surface">
+                    <Photo src={p.image} alt={p.title} sizes="(min-width: 768px) 33vw, 100vw" className="transition-transform duration-700 group-hover:scale-105" />
+                  </div>
+                  <p className="kicker mt-5 text-accent-dark">{p.categories[0]}</p>
+                  <h3 className="type-display mt-2 text-xl leading-tight text-fg transition-colors group-hover:text-accent-dark sm:text-2xl">{p.title}</h3>
+                </Link>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
     </>
   );
 }

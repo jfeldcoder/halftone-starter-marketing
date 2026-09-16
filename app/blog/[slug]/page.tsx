@@ -4,7 +4,8 @@ import { notFound } from "next/navigation";
 import { posts, getPost } from "@/lib/posts";
 import Photo from "@/components/Photo";
 import Reveal from "@/components/Reveal";
-import CTABand from "@/components/CTABand";
+import { Dot } from "@/components/SectionHeading";
+import ClosingCTA from "@/components/ClosingCTA";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -23,63 +24,61 @@ export default async function PostPage({ params }: Params) {
   const { slug } = await params;
   const p = getPost(slug);
   if (!p) notFound();
-  const others = posts.filter((x) => x.slug !== p.slug).slice(0, 2);
+  const others = posts.filter((x) => x.slug !== p.slug).slice(0, 3);
 
   return (
     <>
-      <article className="pt-[72px]">
-        <div className="container-page py-12 lg:py-16">
-          <Reveal className="mx-auto max-w-3xl">
-            <Link href="/blog" className="text-sm text-fg-muted hover:text-fg">
+      <article>
+        <div className="mx-auto max-w-content px-gutter pt-28 lg:px-8 lg:pt-40">
+          <Reveal className="max-w-4xl">
+            <Link href="/blog" className="link-arrow">
               ← All articles
             </Link>
-            <p className="eyebrow-accent mt-8">{p.categories.join(" · ")}</p>
-            <h1 className="display mt-3 text-4xl font-extrabold leading-[1.02] text-fg sm:text-6xl">{p.title}</h1>
-            <p className="mt-5 text-sm text-fg-faint">
+            <p className="kicker mt-8 text-accent-dark">{p.categories.join(" · ")}</p>
+            <h1 className="type-display mt-3 text-[clamp(2.2rem,5.5vw,4.6rem)] text-fg">{p.title}</h1>
+            <p className="kicker mt-5 font-normal text-fg-faint">
               By {p.author} · {new Date(p.date).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" })} · {p.readMinutes} min read
             </p>
           </Reveal>
-          <Reveal delay={0.1} className="mx-auto mt-10 max-w-5xl">
-            <div className="relative aspect-[16/8] overflow-hidden rounded-[2rem]">
-              <Photo src={p.image} alt={p.title} sizes="(min-width: 1024px) 60rem, 100vw" priority />
-            </div>
-          </Reveal>
-          <div className="mx-auto mt-12 max-w-2xl">
-            {p.body.map((b, i) =>
-              b.type === "h2" ? (
-                <Reveal key={i} delay={0.05} y={12}>
-                  <h2 className="display mb-4 mt-10 text-2xl font-extrabold text-fg sm:text-3xl">{b.text}</h2>
-                </Reveal>
-              ) : (
-                <Reveal key={i} delay={0.05} y={12}>
-                  <p className="mb-6 text-lg leading-[1.75] text-fg-muted">{b.text}</p>
-                </Reveal>
-              ),
-            )}
+        </div>
+        <Reveal delay={0.1} className="mx-auto mt-10 max-w-content px-gutter lg:px-8">
+          <div className="relative aspect-[16/8] overflow-hidden bg-surface">
+            <Photo src={p.image} alt={p.title} sizes="100vw" priority />
           </div>
+        </Reveal>
+        <div className="mx-auto max-w-2xl px-gutter py-14 lg:py-20">
+          {p.body.map((b, i) =>
+            b.type === "h2" ? (
+              <Reveal key={i} delay={0.04}>
+                <h2 className="type-display mb-4 mt-10 text-2xl text-fg sm:text-3xl">{b.text}</h2>
+              </Reveal>
+            ) : (
+              <Reveal key={i} delay={0.04}>
+                <p className="mb-6 text-[1.05rem] leading-[1.75] text-fg-muted">{b.text}</p>
+              </Reveal>
+            ),
+          )}
         </div>
       </article>
 
       <section className="border-t border-line bg-bg-elev">
-        <div className="container-page py-16">
-          <p className="eyebrow">Keep reading</p>
-          <div className="mt-6 grid gap-6 md:grid-cols-2">
+        <div className="mx-auto max-w-content px-gutter py-16 lg:px-8 lg:py-20">
+          <p className="kicker text-fg-muted">Keep reading</p>
+          <div className="mt-6 grid gap-8 md:grid-cols-3">
             {others.map((o) => (
-              <Link key={o.slug} href={`/blog/${o.slug}`} className="card card-hover group flex gap-5 p-5">
-                <div className="relative h-24 w-32 shrink-0 overflow-hidden rounded-xl">
-                  <Photo src={o.image} alt={o.title} sizes="8rem" />
+              <Link key={o.slug} href={`/blog/${o.slug}`} className="group block">
+                <div className="relative aspect-[16/10] overflow-hidden bg-surface">
+                  <Photo src={o.image} alt={o.title} sizes="(min-width: 768px) 33vw, 100vw" className="transition-transform duration-700 group-hover:scale-105" />
                 </div>
-                <div>
-                  <span className="eyebrow-accent">{o.categories[0]}</span>
-                  <h3 className="display mt-1 text-lg font-extrabold leading-snug text-fg group-hover:text-accent-dark">{o.title}</h3>
-                </div>
+                <p className="kicker mt-4 text-accent-dark">{o.categories[0]}</p>
+                <h3 className="type-display mt-1.5 text-xl leading-tight text-fg transition-colors group-hover:text-accent-dark">{o.title}</h3>
               </Link>
             ))}
           </div>
         </div>
       </section>
 
-      <CTABand />
+      <ClosingCTA image="/images/home/gallery-6.jpg" title={<>Seat the crowd<Dot /><br />Skip the crew<Dot /></>} />
     </>
   );
 }

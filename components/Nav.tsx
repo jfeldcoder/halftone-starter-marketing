@@ -1,154 +1,149 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/cn";
-import Logo from "@/components/Logo";
 
+/**
+ * Fixed nav. Desktop: the mark centered on top, links underneath. Sits
+ * transparent over a photo hero and turns to ink once you scroll.
+ */
 export default function Nav() {
-  const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const [menu, setMenu] = useState<string | null>(null);
   const pathname = usePathname();
-  const { scrollY } = useScroll();
-
-  useMotionValueEvent(scrollY, "change", (v) => setScrolled(v > 12));
+  const [menu, setMenu] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [drop, setDrop] = useState(false);
 
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = menu ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
-  }, [open]);
+  }, [menu]);
 
-  const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href.split("/").slice(0, 2).join("/")));
+  const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith("/" + href.split("/")[1]));
+  const products = site.nav[0].children ?? [];
+  const rest = site.nav.slice(1);
+  const linkCls = (active: boolean) =>
+    cn("kicker font-normal transition-colors hover:text-accent", active ? "text-accent" : "text-white/80");
 
   return (
     <header
       className={cn(
-        "on-ink fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-ink text-white transition-shadow duration-300",
-        scrolled && !open && "shadow-[0_10px_40px_-25px_rgb(0_0_0/0.6)]",
+        "on-ink fixed inset-x-0 top-0 z-50 border-b text-white transition-[background-color,border-color] duration-300",
+        scrolled || menu || pathname !== "/" ? "border-white/10 bg-ink/95 backdrop-blur-md" : "border-transparent bg-gradient-to-b from-scrim/70 to-transparent",
       )}
     >
-      <div className="container-page flex h-[72px] items-center justify-between">
-        <Logo />
-
-        <nav className="hidden items-center gap-1 md:flex" onMouseLeave={() => setMenu(null)}>
-          {site.nav.map((l) => {
-            const hasChildren = "children" in l && l.children;
-            return (
-              <div key={l.label} className="relative" onMouseEnter={() => setMenu(hasChildren ? l.label : null)}>
-                <Link
-                  href={l.href}
-                  className={cn(
-                    "relative flex items-center gap-1 rounded-full px-4 py-2 text-sm font-medium transition-colors",
-                    isActive(l.href) ? "text-white" : "text-white/65 hover:text-white",
-                  )}
-                >
-                  {l.label}
-                  {hasChildren && (
-                    <svg width="10" height="10" viewBox="0 0 10 10" className={cn("transition-transform", menu === l.label && "rotate-180")} aria-hidden>
-                      <path d="M2 3.5 5 6.5 8 3.5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                    </svg>
-                  )}
-                  {isActive(l.href) && (
-                    <motion.span layoutId="nav-dot" className="absolute -bottom-0.5 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-accent" />
-                  )}
-                </Link>
-
-                <AnimatePresence>
-                  {hasChildren && menu === l.label && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 8, scale: 0.98 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 6, scale: 0.98 }}
-                      transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                      className="absolute left-0 top-full w-72 pt-3"
-                    >
-                      <div className="overflow-hidden rounded-2xl border border-white/10 bg-ink-elev p-2 shadow-[0_30px_60px_-30px_rgb(0_0_0/0.8)]">
-                        {l.children!.map((c) => (
-                          <Link
-                            key={c.href}
-                            href={c.href}
-                            onClick={() => setMenu(null)}
-                            className="group flex flex-col rounded-xl px-3 py-2.5 transition-colors hover:bg-white/5"
-                          >
-                            <span className="text-sm font-semibold text-white group-hover:text-accent">{c.label}</span>
-                            <span className="text-xs text-white/45">{c.note}</span>
-                          </Link>
-                        ))}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            );
-          })}
-          <Link href={site.cta.href} className="btn btn-primary ml-3 !py-2.5 !text-[13px]">
-            {site.cta.label}
+      <nav className="relative mx-auto max-w-content px-gutter lg:px-8">
+        {/* Mobile row */}
+        <div className="flex h-16 items-center justify-between md:hidden">
+          <Link href="/" data-nav-logo aria-label={`${site.name} home`} className="block">
+            <Image src="/logo-mark@2x.png" alt="EventPro Seating" width={2500} height={640} priority className="h-8 w-auto" />
           </Link>
-        </nav>
+          <div className="flex items-center gap-3">
+            <a href={site.phoneHref} className="kicker font-normal text-white/80">
+              Call
+            </a>
+            <button
+              type="button"
+              aria-label={menu ? "Close menu" : "Open menu"}
+              aria-expanded={menu}
+              onClick={() => setMenu((v) => !v)}
+              className="grid h-10 w-10 place-items-center"
+            >
+              <span className="relative block h-3 w-5">
+                <span className={cn("absolute left-0 block h-0.5 w-5 bg-current transition-transform", menu ? "top-1.5 rotate-45" : "top-0")} />
+                <span className={cn("absolute left-0 block h-0.5 w-5 bg-current transition-transform", menu ? "top-1.5 -rotate-45" : "top-3")} />
+              </span>
+            </button>
+          </div>
+        </div>
 
-        <button
-          onClick={() => setOpen((v) => !v)}
-          aria-label={open ? "Close menu" : "Open menu"}
-          aria-expanded={open}
-          className="relative h-10 w-10 md:hidden"
-        >
-          <span
-            className="absolute left-1/2 top-1/2 h-0.5 w-6 -translate-x-1/2 bg-white transition-transform duration-300"
-            style={{ transform: open ? "translate(-50%,-50%) rotate(45deg)" : "translate(-50%,-6px)" }}
-          />
-          <span
-            className="absolute left-1/2 top-1/2 h-0.5 w-6 -translate-x-1/2 bg-white transition-transform duration-300"
-            style={{ transform: open ? "translate(-50%,-50%) rotate(-45deg)" : "translate(-50%,4px)" }}
-          />
-        </button>
-      </div>
-
-      <AnimatePresence>
-        {open && (
-          <motion.nav
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="absolute inset-x-0 top-full h-[calc(100dvh-72px)] overflow-y-auto border-t border-white/10 bg-ink md:hidden"
-          >
-            <div className="container-page flex flex-col gap-1 py-6">
-              {site.nav.flatMap((l, i) => {
-                const items = "children" in l && l.children ? l.children : [l];
-                return items.map((c, j) => (
-                  <motion.div
-                    key={c.href}
-                    initial={{ opacity: 0, x: -14 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.05 + (i + j) * 0.05 }}
-                  >
-                    <Link
-                      href={c.href}
-                      onClick={() => setOpen(false)}
-                      className="display flex items-center justify-between border-b border-white/10 py-4 text-2xl font-extrabold text-white"
-                    >
-                      {c.label}
-                      <span className="text-accent">→</span>
-                    </Link>
-                  </motion.div>
-                ));
-              })}
-              <Link href={site.cta.href} onClick={() => setOpen(false)} className="btn btn-primary mt-6 w-full">
-                {site.cta.label}
+        {/* Desktop: mark on top, links below */}
+        <div className="hidden md:block">
+          <div className="relative flex items-center justify-center pt-5">
+            <Link href="/" data-nav-logo aria-label={`${site.name} home`} className="block transition-opacity hover:opacity-85">
+              <Image src="/logo-mark@2x.png" alt="EventPro Seating" width={2500} height={640} priority className="h-10 w-auto" />
+            </Link>
+            <a href={site.phoneHref} className="kicker absolute right-0 top-1/2 -translate-y-1/2 font-normal text-white/80 transition-colors hover:text-accent">
+              {site.phone}
+            </a>
+          </div>
+          <div className="flex items-center justify-center gap-9 pb-4 pt-3">
+            <div className="relative" onMouseEnter={() => setDrop(true)} onMouseLeave={() => setDrop(false)}>
+              <Link href={site.nav[0].href} className={cn("flex items-center gap-1.5", linkCls(isActive("/products")))}>
+                Products
+                <span aria-hidden className={cn("text-[0.6rem] transition-transform", drop && "rotate-180")}>
+                  ▾
+                </span>
               </Link>
-              <a href={site.phoneHref} className="mt-4 text-center text-sm text-white/60">
-                Call {site.phone}
-              </a>
+              <AnimatePresence>
+                {drop && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 6 }}
+                    transition={{ duration: 0.18 }}
+                    className="absolute left-1/2 top-full -translate-x-1/2 pt-3"
+                  >
+                    <div className="flex min-w-56 flex-col border border-white/10 bg-ink py-1.5">
+                      {products.map((c) => (
+                        <Link key={c.href} href={c.href} onClick={() => setDrop(false)} className="whitespace-nowrap px-5 py-2.5 transition-colors hover:bg-white/5">
+                          <span className={cn("kicker block font-normal", isActive(c.href) && pathname === c.href ? "text-accent" : "text-white/85")}>{c.label}</span>
+                          <span className="mono mt-0.5 block text-[0.62rem] text-white/45">{c.note}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
-          </motion.nav>
-        )}
-      </AnimatePresence>
+            {rest.map((l) => (
+              <Link key={l.href} href={l.href} className={linkCls(isActive(l.href))}>
+                {l.label}
+              </Link>
+            ))}
+            <Link href="/contact" className="btn btn-primary !px-5 !py-2.5 !text-[0.62rem]">
+              Get a quote
+            </Link>
+          </div>
+        </div>
+      </nav>
+
+      {menu && (
+        <div className="no-bar max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-white/10 bg-ink px-gutter py-4 md:hidden">
+          <p className="kicker pb-1 text-white/40">Products</p>
+          {products.map((c) => (
+            <Link key={c.href} href={c.href} onClick={() => setMenu(false)} className="type-display block py-3 pl-4 text-2xl text-white">
+              {c.label}
+            </Link>
+          ))}
+          <div className="mt-2 border-t border-white/10 pt-2">
+            {rest.map((l) => (
+              <Link key={l.href} href={l.href} onClick={() => setMenu(false)} className="type-display block py-3 text-2xl text-white">
+                {l.label}
+              </Link>
+            ))}
+          </div>
+          <Link href="/contact" onClick={() => setMenu(false)} className="btn btn-primary mt-6 w-full">
+            Get a quote
+          </Link>
+          <a href={site.phoneHref} className="kicker mt-5 block text-center font-normal text-white/60">
+            {site.phone}
+          </a>
+        </div>
+      )}
     </header>
   );
 }
