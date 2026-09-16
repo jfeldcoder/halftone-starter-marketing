@@ -23,14 +23,11 @@ export default function Hero({ image }: { image: string | null }) {
       <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-scrim via-scrim/45 to-scrim/10" />
 
       <div className="relative z-10 mx-auto w-full max-w-content px-gutter pb-12 pt-40 lg:px-8 lg:pb-16">
-        <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15, duration: 0.6 }} className="kicker text-accent">
-          Patented · Made in the USA · One-person setup
-        </motion.p>
         <motion.h1
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25, duration: 0.7, ease }}
-          className="type-display type-hero mt-4 max-w-5xl text-[clamp(2.6rem,7.2vw,6.4rem)]"
+          className="type-display type-hero max-w-5xl text-[clamp(2.6rem,7.2vw,6.4rem)]"
         >
           Premier bleacher systems
           <br />
@@ -47,6 +44,9 @@ export default function Hero({ image }: { image: string | null }) {
             See the lineup
           </Link>
         </motion.div>
+        <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.65, duration: 0.6 }} className="kicker mt-8 text-accent">
+          Patented · Made in the USA · One-person setup
+        </motion.p>
       </div>
     </section>
   );
