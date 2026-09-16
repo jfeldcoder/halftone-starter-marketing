@@ -43,8 +43,8 @@ export default function Banner({ slides, height = "h-[26rem] sm:h-[32rem]", soft
 
       {soft && (
         <>
-          <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 z-[5] h-32 bg-gradient-to-b from-bg to-transparent" />
-          <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-32 bg-gradient-to-t from-bg to-transparent" />
+          <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 z-[5] h-20 bg-gradient-to-b from-bg to-transparent" />
+          <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-20 bg-gradient-to-t from-bg to-transparent" />
         </>
       )}
       <div className="relative z-10 flex h-full flex-col items-center justify-center px-gutter text-center">

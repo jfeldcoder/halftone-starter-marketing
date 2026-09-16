@@ -75,9 +75,9 @@ export default function Home() {
       {/* Our commitment to excellence (from the live site), on olive */}
       <section
         className="on-ink text-white"
-        style={{ background: "linear-gradient(to bottom, var(--bg) 0%, var(--ink) 22%, var(--ink) 78%, var(--bg) 100%)" }}
+        style={{ background: "linear-gradient(to bottom, var(--bg) 0%, var(--ink) 11%, var(--ink) 89%, var(--bg) 100%)" }}
       >
-        <div className="mx-auto max-w-content px-gutter py-40 lg:px-8 lg:py-56">
+        <div className="mx-auto max-w-content px-gutter py-28 lg:px-8 lg:py-36">
           <SectionHeading kicker="Our commitment to excellence" title={<>Dependable seating<br />for every occasion<Dot /></>} light size="lg" />
           <div className="mt-14 grid gap-10 md:grid-cols-2 lg:grid-cols-4">
             {COMMITMENT.map((c, i) => (
