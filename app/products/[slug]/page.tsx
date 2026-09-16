@@ -5,12 +5,12 @@ import { products, getProduct } from "@/lib/products";
 import { resolveAsset } from "@/lib/assets";
 import Photo from "@/components/Photo";
 import Reveal from "@/components/Reveal";
-import Counter from "@/components/Counter";
-import SectionHeading from "@/components/SectionHeading";
-import BleacherIllustration from "@/components/BleacherIllustration";
+import SectionHeading, { Dot } from "@/components/SectionHeading";
 import Gallery from "@/components/Gallery";
-import CTABand from "@/components/CTABand";
-import ProductCard from "@/components/ProductCard";
+import Banner from "@/components/Banner";
+import SplitSection from "@/components/SplitSection";
+import ProductTile from "@/components/ProductTile";
+import ClosingCTA from "@/components/ClosingCTA";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -30,209 +30,171 @@ export default async function ProductPage({ params }: Params) {
   const p = getProduct(slug);
   if (!p) notFound();
 
-  const hero = resolveAsset(p.heroImage);
-  const isDeck = p.slug === "event-deck";
   const related = products.filter((x) => x.slug !== p.slug);
-  const gallery = p.gallery.map((path, i) => ({ path, src: resolveAsset(path), alt: `${p.name} photo ${i + 1}`, span: i === 0 ? ("wide" as const) : undefined }));
+  const gallery = p.gallery.map((path, i) => ({ path, src: resolveAsset(path), alt: `${p.name}, photo ${i + 1}`, span: i === 0 ? ("wide" as const) : undefined }));
+  const slides = p.bullets.slice(0, 3).map((b) => ({ kicker: p.name, quote: b, image: resolveAsset(p.gallery[1] ?? p.heroImage) }));
 
   return (
     <>
-      {/* Hero */}
-      <section className="relative overflow-hidden pt-[72px]">
-        <div className="bg-grid absolute inset-0 opacity-60 [mask-image:radial-gradient(ellipse_at_top_left,black,transparent_70%)]" />
-        <div className="container-page relative grid items-center gap-12 py-16 lg:grid-cols-12 lg:py-24">
-          <div className="lg:col-span-6">
-            <Reveal>
-              <p className="eyebrow-accent">{p.kicker}</p>
-              <h1 className="display mt-4 text-5xl font-extrabold leading-[0.98] text-fg sm:text-6xl lg:text-7xl">{p.name}</h1>
-              <p className="display mt-4 text-2xl font-semibold text-fg-muted">{p.headline}</p>
-              <p className="mt-6 max-w-xl text-lg leading-relaxed text-fg-muted">{p.intro}</p>
-              <div className="mt-9 flex flex-wrap gap-3">
-                <Link href={`/contact?product=${p.slug}`} className="btn btn-primary">
-                  Get a quote
-                </Link>
-                <a href="#specs" className="btn btn-ghost">
-                  Full specs
-                </a>
-              </div>
-            </Reveal>
-          </div>
-          <div className="lg:col-span-6">
-            <Reveal delay={0.15}>
-              <div className="relative aspect-[5/4] overflow-hidden rounded-[2rem] border border-line bg-bg-elev shadow-[0_40px_80px_-40px_rgb(23_20_17/0.4)]">
-                {hero ? (
-                  <Photo src={p.heroImage} alt={`${p.name} deployed at an event`} priority />
-                ) : (
-                  <div className="absolute inset-0 flex items-center p-6 sm:p-10">
-                    <BleacherIllustration rows={p.rows} variant={isDeck ? "deck" : "bleacher"} mode="mount" delay={0.3} />
-                  </div>
-                )}
-              </div>
-            </Reveal>
-          </div>
-        </div>
+      {/* Title + photo */}
+      <section className="mx-auto max-w-content px-gutter pt-28 lg:px-8 lg:pt-40">
+        <Reveal>
+          <p className="kicker text-accent-dark">{p.kicker}</p>
+          <h1 className="type-display mt-3 text-[clamp(2.6rem,7vw,6rem)] text-fg">
+            {p.name}
+            <Dot />
+          </h1>
+        </Reveal>
       </section>
-
-      {/* Key numbers */}
-      <section className="border-y border-line bg-ink text-white">
-        <div className="container-page grid divide-y divide-white/10 sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4">
-          {[
-            { v: p.seats, s: "", l: isDeck ? "Guests or crew" : "Guests seated", alt: "" },
-            { v: p.setupMinutes, s: " min", l: "Setup time" },
-            { v: p.crew, s: "", l: `Operator${p.crew > 1 ? "s" : ""} required` },
-            { v: isDeck ? null : p.rows, s: "", l: isDeck ? "Open footprint" : "Rows", alt: "37′ × 24′" },
-          ].map((k, i) => (
-            <Reveal key={k.l} delay={i * 0.06} className="px-2 py-8 sm:px-8">
-              <div className="display text-4xl font-extrabold text-accent">{k.v === null ? k.alt : <Counter value={k.v} suffix={k.s} />}</div>
-              <div className="mt-1 text-sm text-white/60">{k.l}</div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* Highlights + dimensions */}
-      <section className="container-page grid gap-12 py-20 sm:py-28 lg:grid-cols-[1.2fr_0.8fr]">
-        <div>
-          <SectionHeading eyebrow="At a glance" title="The short version." />
-          <ul className="mt-8 grid gap-3 sm:grid-cols-2">
-            {p.bullets.map((b, i) => (
-              <Reveal key={b} as="li" delay={i * 0.05} y={12}>
-                <div className="flex gap-3 rounded-2xl border border-line bg-bg-elev p-4 text-[15px] text-fg">
-                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent text-[11px] text-on-accent">✓</span>
-                  {b}
-                </div>
-              </Reveal>
-            ))}
-          </ul>
-        </div>
-        <Reveal delay={0.1}>
-          <div className="on-ink relative h-full overflow-hidden rounded-[1.5rem] bg-ink p-7 text-white">
-            <div className="bg-grid-ink absolute inset-0 opacity-30" />
-            <div className="relative">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/50">Dimensions</p>
-              <dl className="mt-5 space-y-5">
-                {p.dimensions.map((d) => (
-                  <div key={d.label}>
-                    <dt className="text-sm text-white/60">{d.label}</dt>
-                    <dd className="display mt-1 text-2xl font-extrabold text-accent">{d.value}</dd>
-                  </div>
-                ))}
-              </dl>
-              <div className="mt-8 opacity-80">
-                <BleacherIllustration rows={p.rows} variant={isDeck ? "deck" : "bleacher"} dark />
-              </div>
-            </div>
+      <section className="mx-auto max-w-content px-gutter pt-10 lg:px-8 lg:pt-14">
+        <Reveal>
+          <div className="relative aspect-[16/9] overflow-hidden bg-surface lg:aspect-[21/9]">
+            <Photo src={p.heroImage} alt={`${p.name} deployed at an event`} sizes="100vw" priority />
           </div>
         </Reveal>
       </section>
 
+      {/* Copy + facts */}
+      <section className="mx-auto grid max-w-content gap-12 px-gutter py-16 lg:grid-cols-[1.1fr_0.9fr] lg:px-8 lg:py-24">
+        <div>
+          <Reveal>
+            <h2 className="type-display text-[clamp(1.8rem,3.6vw,3rem)] text-fg">{p.headline}</h2>
+            <p className="mt-6 max-w-xl text-[0.98rem] leading-relaxed text-fg-muted">{p.intro}</p>
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <Link href={`/contact?product=${p.slug}&interest=rent`} className="btn btn-primary">
+                Rent today
+              </Link>
+              <Link href={`/contact?product=${p.slug}&interest=buy`} className="btn btn-ink">
+                Purchase now
+              </Link>
+            </div>
+          </Reveal>
+          <div className="mt-12 grid gap-x-10 sm:grid-cols-2">
+            {p.dimensions.map((d, i) => (
+              <Reveal key={d.label} delay={i * 0.05}>
+                <div className="border-t border-accent pt-4">
+                  <p className="kicker text-fg-muted">{d.label}</p>
+                  <p className="type-display mt-2 text-2xl text-fg sm:text-3xl">{d.value}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+        <ul className="flex flex-col divide-y divide-line border-y border-line self-start">
+          {p.bullets.map((b, i) => (
+            <Reveal key={b} as="li" delay={i * 0.04}>
+              <div className="flex items-baseline gap-5 py-4">
+                <span className="mono text-sm text-accent-dark">{String(i + 1).padStart(2, "0")}</span>
+                <span className="text-[0.95rem] text-fg">{b}</span>
+              </div>
+            </Reveal>
+          ))}
+        </ul>
+      </section>
+
+      <Banner slides={slides} />
+
       {/* Features */}
-      <section className="border-t border-line bg-bg-elev">
-        <div className="container-page py-20 sm:py-28">
-        <SectionHeading eyebrow="Built for the job" title="What makes it different." />
-        <div className="mt-12 grid gap-4 sm:grid-cols-2">
+      <section className="mx-auto max-w-content px-gutter py-20 lg:px-8 lg:py-28">
+        <SectionHeading kicker="Built for the job" title={<>What makes it different<Dot /></>} />
+        <div className="mt-12 grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           {p.features.map((f, i) => (
             <Reveal key={f.title} delay={i * 0.06}>
-              <div className="card card-hover h-full p-7">
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-accent/15 text-accent-dark">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                    <path d="M5 13l4 4L19 7" />
-                  </svg>
-                </span>
-                <h3 className="display mt-4 text-xl font-extrabold text-fg">{f.title}</h3>
-                <p className="mt-2 text-[15px] leading-relaxed text-fg-muted">{f.body}</p>
+              <div className="border-t border-line pt-5">
+                <p className="mono text-sm text-accent-dark">{String(i + 1).padStart(2, "0")}</p>
+                <p className="type-display mt-3 text-xl text-fg">{f.title}</p>
+                <p className="mt-2 text-[0.92rem] leading-relaxed text-fg-muted">{f.body}</p>
               </div>
             </Reveal>
           ))}
         </div>
-        </div>
       </section>
 
-      {/* Trailer-mounted variant (3 Row only) */}
+      {/* Trailer variant (3 Row only) */}
       {p.variant && (
-        <section className="container-page py-20 sm:py-28">
-          <SectionHeading eyebrow={p.variant.name} title={p.variant.headline} lead={p.variant.intro} />
-          <ul className="mt-10 grid gap-3 md:grid-cols-2">
-            {p.variant.bullets.map((b, i) => (
-              <Reveal key={b} as="li" delay={i * 0.05} y={12}>
-                <div className="flex gap-3 rounded-2xl border border-line p-4 text-[15px] text-fg">
-                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent/15 text-[11px] text-accent-dark">✓</span>
-                  {b}
-                </div>
-              </Reveal>
-            ))}
-          </ul>
-          <div className="mt-10">
-            <Gallery items={p.variant.gallery.map((path, i) => ({ path, src: resolveAsset(path), alt: `${p.variant!.name} photo ${i + 1}`, span: i === 0 ? ("wide" as const) : undefined }))} />
-          </div>
-        </section>
-      )}
-
-      {/* Use cases + specs */}
-      <section id="specs" className="border-y border-line bg-bg-elev">
-        <div className="container-page grid gap-12 py-20 sm:py-28 lg:grid-cols-2">
-          <div>
-            <SectionHeading eyebrow="Where it works" title="Built for these events." />
-            <ul className="mt-8 flex flex-wrap gap-2">
-              {p.useCases.map((u, i) => (
-                <Reveal key={u} as="li" delay={i * 0.04} y={10}>
-                  <span className="inline-block rounded-full border border-line bg-bg px-4 py-2 text-sm font-medium text-fg">{u}</span>
+        <>
+          <SplitSection image={p.variant.gallery[0]} alt={`${p.variant.name} on the trailer`} tone="elev">
+            <Reveal>
+              <p className="kicker text-accent-dark">{p.variant.name}</p>
+              <h2 className="type-display mt-4 text-[clamp(1.9rem,3.8vw,3.2rem)] text-fg">
+                More seating<Dot />
+                <br />
+                Maximum flexibility<Dot />
+              </h2>
+              <p className="mt-6 max-w-md text-[0.98rem] leading-relaxed text-fg-muted">{p.variant.intro}</p>
+            </Reveal>
+            <ul className="mt-8 flex flex-col divide-y divide-line border-y border-line">
+              {p.variant.bullets.map((b, i) => (
+                <Reveal key={b} as="li" delay={i * 0.04}>
+                  <div className="flex items-baseline gap-5 py-3.5">
+                    <span className="mono text-sm text-accent-dark">{String(i + 1).padStart(2, "0")}</span>
+                    <span className="text-[0.92rem] text-fg">{b}</span>
+                  </div>
                 </Reveal>
               ))}
             </ul>
-            <div className="mt-10 flex flex-wrap gap-3">
-              {p.rentOrBuy.includes("rent") && (
-                <Link href={`/contact?product=${p.slug}&interest=rent`} className="btn btn-primary">
-                  Rent this system
-                </Link>
-              )}
-              {p.rentOrBuy.includes("buy") && (
-                <Link href={`/contact?product=${p.slug}&interest=buy`} className="btn btn-ink">
-                  Buy this system
-                </Link>
-              )}
-            </div>
+          </SplitSection>
+          <section className="mx-auto max-w-content px-gutter py-16 lg:px-8 lg:py-20">
+            <Gallery items={p.variant.gallery.slice(1).map((path, i) => ({ path, src: resolveAsset(path), alt: `${p.variant!.name}, photo ${i + 1}` }))} />
+          </section>
+        </>
+      )}
+
+      {/* Specs + use cases */}
+      <section className="border-y border-line bg-bg-elev">
+        <div className="mx-auto grid max-w-content gap-12 px-gutter py-20 lg:grid-cols-2 lg:px-8 lg:py-28">
+          <div>
+            <SectionHeading kicker="Where it works" title={<>Built for these events<Dot /></>} />
+            <ul className="mt-8 flex flex-col divide-y divide-line border-y border-line">
+              {p.useCases.map((u) => (
+                <li key={u} className="type-display py-3 text-xl text-fg">
+                  {u}
+                </li>
+              ))}
+            </ul>
           </div>
-          <Reveal delay={0.1}>
-            <div className="card overflow-hidden">
-              <div className="border-b border-line px-6 py-4">
-                <h3 className="display text-lg font-extrabold text-fg">Specifications</h3>
-              </div>
-              <dl className="divide-y divide-line">
-                {p.specs.map((s) => (
-                  <div key={s.label} className="flex items-center justify-between gap-6 px-6 py-3.5 text-sm">
-                    <dt className="text-fg-muted">{s.label}</dt>
-                    <dd className="font-semibold text-fg">{s.value}</dd>
-                  </div>
-                ))}
-              </dl>
-              <p className="border-t border-line px-6 py-3 text-xs text-fg-faint">Specifications from EventPro Seating product data. Confirm the configuration for your event with our team.</p>
-            </div>
-          </Reveal>
+          <div>
+            <p className="kicker text-accent-dark">Specifications</p>
+            <dl className="mt-4 flex flex-col divide-y divide-line border-y border-line">
+              {p.specs.map((s) => (
+                <div key={s.label} className="flex items-center justify-between gap-6 py-3.5">
+                  <dt className="kicker font-normal text-fg-muted">{s.label}</dt>
+                  <dd className="text-right text-sm font-bold uppercase tracking-[0.04em] text-fg">{s.value}</dd>
+                </div>
+              ))}
+            </dl>
+            <p className="kicker mt-4 font-normal text-fg-faint">From EventPro Seating product data</p>
+          </div>
         </div>
       </section>
 
       {/* Gallery */}
-      <section className="container-page py-20 sm:py-28">
-        <SectionHeading eyebrow="Gallery" title={`${p.name} in the field.`} />
-        <div className="mt-12">
+      <section className="mx-auto max-w-content px-gutter py-20 lg:px-8 lg:py-28">
+        <SectionHeading kicker="Gallery" title={<>{p.name} in the field<Dot /></>} />
+        <div className="mt-10">
           <Gallery items={gallery} />
         </div>
       </section>
 
       {/* Related */}
-      <section className="border-t border-line bg-bg-elev">
-        <div className="container-page py-20 sm:py-28">
-          <SectionHeading eyebrow="Also consider" title="Pair it with." />
-          <div className="mt-12 grid gap-6 md:grid-cols-2">
+      <section className="border-t border-line">
+        <div className="mx-auto max-w-content px-gutter py-20 lg:px-8 lg:py-28">
+          <Reveal>
+            <h2 className="type-display text-[clamp(1.9rem,4.2vw,3.4rem)] text-fg">
+              Runs well with<Dot />
+            </h2>
+          </Reveal>
+          <div className="mt-10 grid gap-6 md:grid-cols-2 lg:gap-8">
             {related.map((r, i) => (
-              <ProductCard key={r.slug} product={r} image={resolveAsset(r.heroImage)} index={i} />
+              <Reveal key={r.slug} delay={i * 0.06}>
+                <ProductTile product={r} image={resolveAsset(r.heroImage)} wide />
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      <CTABand title={`Ready to put the ${p.name} to work?`} />
+      <ClosingCTA image={p.gallery[2] ?? p.heroImage} title={<>Ready to put the<br />{p.name} to work<Dot /></>} />
     </>
   );
 }

@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import Reveal from "@/components/Reveal";
-import SectionHeading from "@/components/SectionHeading";
+import SectionHeading, { Dot } from "@/components/SectionHeading";
+import SplitSection from "@/components/SplitSection";
 import FAQ from "@/components/FAQ";
-import CTABand from "@/components/CTABand";
-import Photo from "@/components/Photo";
-import Counter from "@/components/Counter";
+import ClosingCTA from "@/components/ClosingCTA";
 import { faqs, timeline } from "@/lib/content";
 import { assetManifest } from "@/lib/assets";
 import { site } from "@/lib/site";
@@ -15,134 +14,97 @@ export const metadata: Metadata = {
   alternates: { canonical: "/about" },
 };
 
-const VALUES = [
-  { t: "Simplicity", b: "If it needs a crew, it is not finished. Every system is designed to be deployed by one person." },
-  { t: "Safety", b: "Guardrails, closed risers, and rated structures are engineered in from the start, not bolted on later." },
-  { t: "Durability", b: "Aluminum and galvanized steel chosen for years of outdoor use, not one season." },
-  { t: "Service", b: "From the first consultation to post-event follow-up, you talk to the people who build the systems." },
+const BEATS = [
+  { k: "Innovating event spaces", v: "Founded over two decades ago with a groundbreaking vision, revolutionizing event viewing experiences with innovative modular bleacher systems." },
+  { k: "Efficiency and safety first", v: "Patented mobile bleacher systems engineered for maximum simplicity, minimizing labor and cost while meeting the highest standards of safety and durability." },
+  { k: "Commitment to excellence", v: "Continual innovation and a steadfast commitment to quality. Each project is a chance to turn an ordinary venue into a memorable landmark." },
 ];
 
 export default function AboutPage() {
   return (
     <>
-      <section className="relative overflow-hidden pt-[72px]">
-        <div className="bg-grid absolute inset-0 opacity-60 [mask-image:radial-gradient(ellipse_at_top,black,transparent_70%)]" />
-        <div className="container-page relative grid gap-12 py-16 lg:grid-cols-12 lg:py-24">
-          <Reveal className="lg:col-span-7">
-            <p className="eyebrow-accent">About EventPro Seating</p>
-            <h1 className="display mt-4 text-5xl font-extrabold leading-[0.98] text-fg sm:text-6xl lg:text-7xl">
-              Over two decades of <span className="text-gradient">innovation.</span>
-            </h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-fg-muted">
-              EventPro Seating was founded on a simple idea: temporary seating should not need a crew, a crane, or a week. Today our patented mobile bleacher systems and modular event decks are engineered and manufactured in Brooksville, Florida, and put to work at events nationwide.
-            </p>
-          </Reveal>
-          <Reveal delay={0.15} className="lg:col-span-5">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem]">
-              <Photo src={assetManifest.about.team} alt="Bleacher frames on the manufacturing floor in Brooksville, Florida" priority />
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      <section className="border-y border-line bg-ink text-white">
-        <div className="container-page grid divide-y divide-white/10 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-          {[
-            { v: 20, s: "+", l: "Years in bleachers" },
-            { v: 1000, s: "s", l: "Of event days seated" },
-            { v: 100, s: "%", l: "Made in the USA" },
-          ].map((k, i) => (
-            <Reveal key={k.l} delay={i * 0.06} className="px-2 py-8 sm:px-8">
-              <div className="display text-4xl font-extrabold text-accent">
-                <Counter value={k.v} suffix={k.s} />
+      <section className="mx-auto max-w-content px-gutter pb-16 pt-28 lg:px-8 lg:pb-24 lg:pt-40">
+        <Reveal>
+          <p className="kicker text-accent-dark">About EventPro Seating</p>
+          <h1 className="type-display mt-3 max-w-5xl text-[clamp(2.6rem,7vw,6rem)] text-fg">
+            Over two decades
+            <br />
+            of innovation<Dot />
+          </h1>
+        </Reveal>
+        <div className="mt-16 grid gap-10 md:grid-cols-3">
+          {BEATS.map((b, i) => (
+            <Reveal key={b.k} delay={i * 0.07}>
+              <div className="border-t border-accent pt-5">
+                <p className="kicker text-accent-dark">{b.k}</p>
+                <p className="mt-3 text-[0.95rem] leading-relaxed text-fg-muted">{b.v}</p>
               </div>
-              <div className="mt-1 text-sm text-white/60">{k.l}</div>
             </Reveal>
           ))}
         </div>
       </section>
 
-      {/* Timeline */}
-      <section className="container-page py-20 sm:py-28">
-        <SectionHeading eyebrow="Our story" title="Built one event at a time." />
-        <ol className="mt-12 grid gap-6 md:grid-cols-4">
+      <SplitSection image={assetManifest.about.team} alt="Bleacher frames on the manufacturing floor in Brooksville, Florida" position="50% 40%" tone="elev">
+        <Reveal>
+          <p className="kicker text-accent-dark">Headquarters</p>
+          <h2 className="type-display mt-4 text-[clamp(1.9rem,3.8vw,3.2rem)] text-fg">
+            Brooksville, Florida<Dot />
+          </h2>
+          <p className="mt-6 max-w-md text-[0.98rem] leading-relaxed text-fg-muted">
+            Systems are engineered, manufactured, and serviced at our facility north of Tampa. Purchased systems ship nationwide.
+          </p>
+        </Reveal>
+        <Reveal delay={0.1}>
+          <div className="mono mt-8 border-t border-line pt-6 text-sm leading-relaxed text-fg">
+            {site.address.street}
+            <br />
+            {site.address.city}, {site.address.region} {site.address.postalCode}
+            <br />
+            <span className="text-fg-muted">{site.hours}</span>
+          </div>
+          <div className="mt-6 flex flex-wrap items-center gap-5">
+            <a href={site.phoneHref} className="btn btn-ink">
+              {site.phone}
+            </a>
+            <a
+              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${site.address.street}, ${site.address.city}, ${site.address.region} ${site.address.postalCode}`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="link-arrow"
+            >
+              Open in Maps →
+            </a>
+          </div>
+        </Reveal>
+      </SplitSection>
+
+      <section className="mx-auto max-w-content px-gutter py-20 lg:px-8 lg:py-28">
+        <SectionHeading kicker="Our story" title={<>Built one event<br />at a time<Dot /></>} />
+        <ol className="mt-12 flex flex-col divide-y divide-line border-y border-line">
           {timeline.map((t, i) => (
-            <Reveal key={t.year} as="li" delay={i * 0.08}>
-              <div className="relative border-t-2 border-line pt-6">
-                <span className="absolute -top-[2px] left-0 h-[2px] w-12 bg-accent" />
-                <span className="display text-sm font-extrabold text-accent-dark">{t.year}</span>
-                <h3 className="display mt-2 text-xl font-extrabold text-fg">{t.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-fg-muted">{t.body}</p>
+            <Reveal key={t.year} as="li" delay={i * 0.05}>
+              <div className="grid gap-2 py-6 md:grid-cols-[8rem_1fr]">
+                <p className="mono text-sm text-accent-dark">{t.year}</p>
+                <div>
+                  <p className="type-display text-2xl text-fg">{t.title}</p>
+                  <p className="mt-2 max-w-2xl text-[0.95rem] leading-relaxed text-fg-muted">{t.body}</p>
+                </div>
               </div>
             </Reveal>
           ))}
         </ol>
       </section>
 
-      {/* Values + facility */}
-      <section className="border-y border-line bg-bg-elev">
-        <div className="container-page grid gap-12 py-20 sm:py-28 lg:grid-cols-2 lg:items-center">
-          <Reveal>
-            <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem]">
-              <Photo src={assetManifest.about.facility} alt="The full lineup: 3 Row, 10 Row, and Event Deck" />
-            </div>
-          </Reveal>
-          <div>
-            <SectionHeading eyebrow="What we stand for" title="Engineered for the person setting it up." />
-            <ul className="mt-8 divide-y divide-line">
-              {VALUES.map((v, i) => (
-                <Reveal key={v.t} as="li" delay={i * 0.06} className="py-5">
-                  <h3 className="display text-xl font-extrabold text-fg">{v.t}</h3>
-                  <p className="mt-1 text-[15px] text-fg-muted">{v.b}</p>
-                </Reveal>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      {/* Location */}
-      <section className="container-page grid gap-10 py-20 sm:py-28 lg:grid-cols-[1fr_1fr]">
-        <SectionHeading eyebrow="Headquarters" title="Brooksville, Florida." lead="Systems are engineered, manufactured, and serviced at our facility north of Tampa. Rentals serve the Southeast; purchased systems ship nationwide." />
-        <Reveal delay={0.1}>
-          <div className="card flex h-full flex-col justify-between p-7">
-            <div>
-              <p className="display text-xl font-extrabold text-fg">{site.name}</p>
-              <p className="mt-2 text-fg-muted">
-                {site.address.street}
-                <br />
-                {site.address.city}, {site.address.region} {site.address.postalCode}
-              </p>
-              <p className="mt-4 text-sm text-fg-muted">{site.hours}</p>
-            </div>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <a href={site.phoneHref} className="btn btn-primary">
-                {site.phone}
-              </a>
-              <a
-                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${site.address.street}, ${site.address.city}, ${site.address.region} ${site.address.postalCode}`)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-ghost"
-              >
-                Open in Maps
-              </a>
-            </div>
-          </div>
-        </Reveal>
-      </section>
-
-      {/* FAQ */}
-      <section id="faq" className="border-t border-line bg-bg-elev scroll-mt-20">
-        <div className="container-page grid gap-12 py-20 sm:py-28 lg:grid-cols-[0.8fr_1.2fr]">
-          <SectionHeading eyebrow="FAQ" title="Questions we hear most." lead="Don't see yours? Call us and talk to someone who builds the systems." />
+      <section id="faq" className="scroll-mt-24 border-t border-line bg-bg-elev">
+        <div className="mx-auto grid max-w-content gap-12 px-gutter py-20 lg:grid-cols-[0.8fr_1.2fr] lg:px-8 lg:py-28">
+          <SectionHeading kicker="FAQ" title={<>Questions we<br />hear most<Dot /></>} lead="Don't see yours? Call and talk to someone who builds the systems." />
           <Reveal delay={0.1}>
             <FAQ items={faqs} />
           </Reveal>
         </div>
       </section>
 
-      <CTABand />
+      <ClosingCTA image={assetManifest.about.facility} title={<>Let&apos;s seat<br />your crowd<Dot /></>} />
     </>
   );
 }

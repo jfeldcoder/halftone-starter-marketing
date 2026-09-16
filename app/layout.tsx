@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
-import { Manrope, Inter_Tight } from "next/font/google";
+import { Barlow, Manrope, Space_Mono } from "next/font/google";
 import { site } from "@/lib/site";
 import { organizationSchema } from "@/lib/schema";
 import JsonLd from "@/components/JsonLd";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import Splash from "@/components/Splash";
-import ScrollProgress from "@/components/ScrollProgress";
 import "./globals.css";
 
+const display = Barlow({ subsets: ["latin"], weight: ["500", "600", "700"], variable: "--font-display", display: "swap" });
 const sans = Manrope({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
-const display = Inter_Tight({ subsets: ["latin"], variable: "--font-display", display: "swap" });
+const mono = Space_Mono({ subsets: ["latin"], weight: ["400", "700"], variable: "--font-mono", display: "swap" });
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || site.url;
 const ogImages = site.seo.image ? [{ url: site.seo.image }] : undefined;
@@ -32,13 +32,19 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${sans.variable} ${display.variable}`}>
-      <body>
+    <html lang="en" className={`${display.variable} ${sans.variable} ${mono.variable}`}>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `history.scrollRestoration="manual";window.scrollTo(0,0);addEventListener("pageshow",function(e){if(e.persisted)window.scrollTo(0,0)});`,
+          }}
+        />
+      </head>
+      <body className="flex min-h-full flex-col">
         <JsonLd data={organizationSchema()} />
         <Splash />
-        <ScrollProgress />
         <Nav />
-        <main>{children}</main>
+        <main className="relative z-10 flex-1">{children}</main>
         <Footer />
       </body>
     </html>
