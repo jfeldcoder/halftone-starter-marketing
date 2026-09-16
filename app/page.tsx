@@ -53,9 +53,7 @@ export default function Home() {
           <Reveal>
             <div className="flex flex-wrap items-end justify-between gap-4">
               <h2 className="type-display text-[clamp(2.2rem,5vw,4.2rem)] text-fg">
-                The
-                <br />
-                lineup<Dot />
+                The lineup<Dot />
               </h2>
               <Link href="/sales" className="link-arrow">
                 Rent or buy →
