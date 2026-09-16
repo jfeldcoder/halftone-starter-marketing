@@ -71,12 +71,12 @@ export default function Nav() {
         </div>
 
         {/* Desktop: mark on top, links below */}
-        <div className="hidden md:block">
+        <div className="relative hidden md:block">
           <div className="relative flex items-center justify-center pt-4">
             <Link href="/" data-nav-logo aria-label={`${site.name} home`} className="block transition-opacity hover:opacity-85">
               <Image src="/logo.png" alt="EventPro Seating" width={2500} height={1144} priority className="h-[84px] w-auto" />
             </Link>
-            <a href={site.phoneHref} className="kicker absolute right-0 top-1/2 -translate-y-1/2 font-normal text-white/80 transition-colors hover:text-accent">
+            <a href={site.phoneHref} className="kicker absolute right-0 top-9 font-normal text-white/80 transition-colors hover:text-accent">
               {site.phone}
             </a>
           </div>
@@ -114,10 +114,10 @@ export default function Nav() {
                 {l.label}
               </Link>
             ))}
-            <Link href="/contact" className="btn btn-primary !px-5 !py-2.5 !text-[0.62rem]">
-              Get a quote
-            </Link>
           </div>
+          <Link href="/contact" className="btn btn-primary absolute bottom-3 right-0 !px-5 !py-2.5 !text-[0.62rem]">
+            Get a quote
+          </Link>
         </div>
       </nav>
 
