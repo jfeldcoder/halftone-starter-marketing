@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 export default function SalesPage() {
   return (
     <>
-      <section className="mx-auto max-w-content px-gutter pb-16 pt-28 lg:px-8 lg:pb-24 lg:pt-40">
+      <section className="mx-auto max-w-content px-gutter pb-16 pt-28 lg:px-8 lg:pb-24 lg:pt-52">
         <Reveal>
           <p className="kicker text-accent-dark">Sales and rentals</p>
           <h1 className="type-display mt-3 max-w-5xl text-[clamp(2.6rem,7vw,6rem)] text-fg">

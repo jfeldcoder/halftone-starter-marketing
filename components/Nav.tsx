@@ -49,7 +49,7 @@ export default function Nav() {
         {/* Mobile row */}
         <div className="flex h-16 items-center justify-between md:hidden">
           <Link href="/" data-nav-logo aria-label={`${site.name} home`} className="block">
-            <Image src="/logo-mark@2x.png" alt="EventPro Seating" width={2500} height={640} priority className="h-8 w-auto" />
+            <Image src="/logo.png" alt="EventPro Seating" width={2500} height={1144} priority className="h-12 w-auto" />
           </Link>
           <div className="flex items-center gap-3">
             <a href={site.phoneHref} className="kicker font-normal text-white/80">
@@ -72,15 +72,15 @@ export default function Nav() {
 
         {/* Desktop: mark on top, links below */}
         <div className="hidden md:block">
-          <div className="relative flex items-center justify-center pt-5">
+          <div className="relative flex items-center justify-center pt-4">
             <Link href="/" data-nav-logo aria-label={`${site.name} home`} className="block transition-opacity hover:opacity-85">
-              <Image src="/logo-mark@2x.png" alt="EventPro Seating" width={2500} height={640} priority className="h-10 w-auto" />
+              <Image src="/logo.png" alt="EventPro Seating" width={2500} height={1144} priority className="h-[84px] w-auto" />
             </Link>
             <a href={site.phoneHref} className="kicker absolute right-0 top-1/2 -translate-y-1/2 font-normal text-white/80 transition-colors hover:text-accent">
               {site.phone}
             </a>
           </div>
-          <div className="flex items-center justify-center gap-9 pb-4 pt-3">
+          <div className="flex items-center justify-center gap-9 pb-4 pt-2">
             <div className="relative" onMouseEnter={() => setDrop(true)} onMouseLeave={() => setDrop(false)}>
               <Link href={site.nav[0].href} className={cn("flex items-center gap-1.5", linkCls(isActive("/products")))}>
                 Products
