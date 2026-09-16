@@ -166,7 +166,7 @@ export default function Home() {
                 <br />
                 Finish lines<Dot />
               </h2>
-              <p className="kicker font-normal text-fg-muted">Scroll sideways</p>
+              <p className="kicker font-normal text-fg-muted">Drag or use the arrows</p>
             </div>
           </Reveal>
         </div>
