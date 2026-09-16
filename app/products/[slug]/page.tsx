@@ -36,8 +36,8 @@ export default async function ProductPage({ params }: Params) {
 
   return (
     <>
-      {/* Title + photo */}
-      <section className="mx-auto max-w-content px-gutter pt-28 lg:px-8 lg:pt-52">
+      {/* Title + photo. Desktop: title above the photo. Phones: name at the top of the photo, headline at the bottom. */}
+      <section className="mx-auto hidden max-w-content px-gutter pt-28 lg:block lg:px-8 lg:pt-52">
         <Reveal>
           <p className="kicker text-accent-dark">{p.kicker}</p>
           <h1 className="type-display mt-3 text-[clamp(2.6rem,7vw,6rem)] text-fg">
@@ -46,10 +46,24 @@ export default async function ProductPage({ params }: Params) {
           </h1>
         </Reveal>
       </section>
-      <section className="mx-auto max-w-content px-gutter pt-10 lg:px-8 lg:pt-14">
+      <section className="mx-auto max-w-content pt-16 lg:px-8 lg:pt-14">
         <Reveal>
-          <div className="relative aspect-[16/9] overflow-hidden bg-surface lg:aspect-[21/9]">
+          <div className="relative aspect-[4/5] overflow-hidden bg-surface sm:aspect-[16/9] lg:aspect-[21/9]">
             <Photo src={p.heroImage} alt={`${p.name} deployed at an event`} sizes="100vw" priority />
+            <div className="absolute inset-x-0 top-0 lg:hidden">
+              <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-scrim/85 via-scrim/45 to-transparent" />
+              <div className="relative px-gutter pb-20 pt-8">
+                <p className="kicker text-accent">{p.kicker}</p>
+                <h1 className="type-display mt-3 text-[clamp(2.2rem,9vw,3.4rem)] text-white">
+                  {p.name}
+                  <Dot />
+                </h1>
+              </div>
+            </div>
+            <div className="absolute inset-x-0 bottom-0 lg:hidden">
+              <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-scrim/85 via-scrim/45 to-transparent" />
+              <p className="type-display relative px-gutter pb-7 pt-20 text-xl text-white">{p.headline}</p>
+            </div>
           </div>
         </Reveal>
       </section>
@@ -58,8 +72,8 @@ export default async function ProductPage({ params }: Params) {
       <section className="mx-auto grid max-w-content gap-12 px-gutter py-16 lg:grid-cols-[1.1fr_0.9fr] lg:px-8 lg:py-24">
         <div>
           <Reveal>
-            <h2 className="type-display text-[clamp(1.8rem,3.6vw,3rem)] text-fg">{p.headline}</h2>
-            <p className="mt-6 max-w-xl text-[0.98rem] leading-relaxed text-fg-muted">{p.intro}</p>
+            <h2 className="type-display hidden text-[clamp(1.8rem,3.6vw,3rem)] text-fg lg:block">{p.headline}</h2>
+            <p className="max-w-xl lg:mt-6 text-[0.98rem] leading-relaxed text-fg-muted">{p.intro}</p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <Link href={`/contact?product=${p.slug}&interest=rent`} className="btn btn-primary">
                 Rent today

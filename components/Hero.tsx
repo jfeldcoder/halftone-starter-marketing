@@ -12,7 +12,7 @@ export default function Hero({ image }: { image: string | null }) {
   const ease = [0.22, 1, 0.36, 1] as const;
 
   return (
-    <section className="on-ink relative flex min-h-svh flex-col justify-end overflow-hidden bg-scrim text-white">
+    <section className="on-ink relative flex min-h-svh flex-col justify-between overflow-hidden bg-scrim text-white lg:justify-end">
       <motion.div style={reduce ? undefined : { y }} className="absolute inset-0 -bottom-32">
         {image ? (
           <Image src={image} alt="A packed EventPro 10 Row bleacher at a night event" fill priority sizes="100vw" quality={88} className="object-cover object-[50%_40%]" />
@@ -21,8 +21,9 @@ export default function Hero({ image }: { image: string | null }) {
         )}
       </motion.div>
       <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-scrim via-scrim/45 to-scrim/10" />
+      <div aria-hidden className="absolute inset-x-0 top-0 h-[55%] bg-gradient-to-b from-scrim/80 via-scrim/35 to-transparent lg:hidden" />
 
-      <div className="relative z-10 mx-auto w-full max-w-content px-gutter pb-12 pt-40 lg:px-8 lg:pb-16">
+      <div className="relative z-10 mx-auto w-full max-w-content px-gutter pt-28 lg:px-8 lg:pt-40">
         <motion.h1
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -33,7 +34,9 @@ export default function Hero({ image }: { image: string | null }) {
           <br />
           for every event<span className="text-accent">.</span>
         </motion.h1>
-        <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.6 }} className="mt-6 max-w-lg text-[0.98rem] leading-relaxed text-white/75">
+      </div>
+      <div className="relative z-10 mx-auto w-full max-w-content px-gutter pb-12 lg:px-8 lg:pb-16">
+        <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.6 }} className="max-w-lg text-[0.98rem] leading-relaxed text-white/75 lg:mt-6">
           Mobile bleachers and event decks that one person unfolds in minutes. Rent for the weekend or own a fleet.
         </motion.p>
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.6 }} className="mt-8 flex flex-wrap items-center gap-3">
