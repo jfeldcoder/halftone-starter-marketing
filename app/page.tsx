@@ -94,20 +94,25 @@ export default function Home() {
       </section>
 
       {/* Made in the USA */}
-      <SplitSection image={assetManifest.about.team} soft alt="Bleacher frames on the manufacturing floor in Brooksville, Florida" position="50% 40%">
-        <Reveal>
-          <p className="kicker text-accent-dark">Made in the USA</p>
-          <h2 className="type-display mt-4 text-[clamp(1.9rem,3.8vw,3.2rem)] text-fg">
-            Built in Brooksville,
-            <br />
-            Florida<Dot />
-          </h2>
-          <p className="mt-6 max-w-md text-[0.98rem] leading-relaxed text-fg-muted">
-            Over two decades of innovation in modular bleacher systems. Every unit is engineered and manufactured in our own facility, then put to work at events nationwide.
-          </p>
-        </Reveal>
+      <SplitSection
+        image={assetManifest.about.team}
+        alt="Bleacher frames on the manufacturing floor in Brooksville, Florida"
+        position="50% 40%"
+        soft
+        heading={{
+          kicker: "Made in the USA",
+          title: (
+            <>
+              Built in Brooksville,
+              <br />
+              Florida<Dot />
+            </>
+          ),
+          lead: "Over two decades of innovation in modular bleacher systems. Every unit is engineered and manufactured in our own facility, then put to work at events nationwide.",
+        }}
+      >
         <NumberedRows
-          className="mt-8 lg:mt-10"
+          className="lg:mt-10"
           rows={[
             { title: "Patented fold-out design", sub: "No loose parts, no crew" },
             { title: "ICC and NFPA compliant", sub: "Guardrails, closed risers, non-slip treads" },
@@ -127,20 +132,26 @@ export default function Home() {
       </SplitSection>
 
       {/* Rent or own */}
-      <SplitSection image={assetManifest.sales.fleet} alt="Towing an EventPro Event Deck to the venue" flip soft position="50% 60%">
-        <Reveal>
-          <p className="kicker text-accent-dark">Sales and rentals</p>
-          <h2 className="type-display mt-4 text-[clamp(1.9rem,3.8vw,3.2rem)] text-fg">
-            Rent it for the weekend<Dot />
-            <br />
-            Or own the season<Dot />
-          </h2>
-          <p className="mt-6 max-w-md text-[0.98rem] leading-relaxed text-fg-muted">
-            Same patented systems either way. Rentals arrive on our trailers with our operator. Purchased systems tow behind a light-duty truck, so your crew brings them anywhere.
-          </p>
-        </Reveal>
+      <SplitSection
+        image={assetManifest.sales.fleet}
+        alt="Towing an EventPro Event Deck to the venue"
+        flip
+        soft
+        position="50% 60%"
+        heading={{
+          kicker: "Sales and rentals",
+          title: (
+            <>
+              Rent it for the weekend<Dot />
+              <br />
+              Or own the season<Dot />
+            </>
+          ),
+          lead: "Same patented systems either way. Rentals arrive on our trailers with our operator. Purchased systems tow behind a light-duty truck, so your crew brings them anywhere.",
+        }}
+      >
         <NumberedRows
-          className="mt-8 lg:mt-10"
+          className="lg:mt-10"
           rows={[
             { title: "Rent today", sub: "Delivered, deployed, picked up" },
             { title: "Purchase now", sub: "Pays for itself in a season" },

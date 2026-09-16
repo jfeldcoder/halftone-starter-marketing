@@ -27,7 +27,7 @@ export default function Hero({ image }: { image: string | null }) {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25, duration: 0.7, ease }}
-          className="type-display type-hero max-w-5xl text-[clamp(2.6rem,7.2vw,6.4rem)]"
+          className="type-display type-hero max-w-5xl text-[2.2rem] sm:text-[clamp(2.6rem,7.2vw,6.4rem)]"
         >
           Premier bleacher systems
           <br />
