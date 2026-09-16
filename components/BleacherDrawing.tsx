@@ -62,9 +62,6 @@ export default function BleacherDrawing({ className, delay = 0, rows = 10 }: { c
         const y = baseY - (i + 1) * rh - 9;
         return <motion.line key={`s${i}`} x1={x + td * 0.42} y1={y} x2={x + td * 0.96} y2={y} stroke="#f1a638" {...line} strokeWidth={5} {...draw(2.05 + i * 0.07, 0.3)} />;
       })}
-      {/* one operator, standing on the ground beside the unit */}
-      <motion.circle cx={586} cy={272} r={8} stroke="#f1a638" {...line} strokeWidth={2.2} {...draw(2.25, 0.3)} />
-      <motion.path d="M586 280 V312 M572 292 H600 M586 312 L574 330 M586 312 L598 330" stroke="#f1a638" {...line} strokeWidth={2.2} {...draw(2.4, 0.45)} />
     </svg>
   );
 }
