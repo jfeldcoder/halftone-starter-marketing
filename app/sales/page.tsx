@@ -49,18 +49,23 @@ export default function SalesPage() {
         </div>
       </section>
 
-      <SplitSection image={assetManifest.sales.allProducts} alt="The full lineup: 3 Row, 10 Row, and Event Deck" flip position="50% 50%">
-        <Reveal>
-          <p className="kicker text-accent-dark">For rental operators</p>
-          <h2 className="type-display mt-4 text-[clamp(1.9rem,3.8vw,3.2rem)] text-fg">
-            Own your region<Dot />
-          </h2>
-          <p className="mt-6 max-w-md text-[0.98rem] leading-relaxed text-fg-muted">
-            Buy a fleet and secure exclusivity in your territory. Grow on capacity and service, not price.
-          </p>
-        </Reveal>
+      <SplitSection
+        image={assetManifest.sales.allProducts}
+        alt="The full lineup: 3 Row, 10 Row, and Event Deck"
+        flip
+        position="50% 50%"
+        heading={{
+          kicker: "For rental operators",
+          title: (
+            <>
+              Own your region<Dot />
+            </>
+          ),
+          lead: "Buy a fleet and secure exclusivity in your territory. Grow on capacity and service, not price.",
+        }}
+      >
         <NumberedRows
-          className="mt-8 lg:mt-10"
+          className="lg:mt-10"
           rows={[
             { title: "Exclusive region", sub: "No one else in your territory runs these systems" },
             { title: "Factory support", sub: "Training, parts, and service from Brooksville" },

@@ -44,18 +44,23 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <SplitSection image={assetManifest.about.team} alt="Bleacher frames on the manufacturing floor in Brooksville, Florida" position="50% 40%" tone="elev">
-        <Reveal>
-          <p className="kicker text-accent-dark">Headquarters</p>
-          <h2 className="type-display mt-4 text-[clamp(1.9rem,3.8vw,3.2rem)] text-fg">
-            Brooksville, Florida<Dot />
-          </h2>
-          <p className="mt-6 max-w-md text-[0.98rem] leading-relaxed text-fg-muted">
-            Systems are engineered, manufactured, and serviced at our facility north of Tampa. Purchased systems ship nationwide.
-          </p>
-        </Reveal>
+      <SplitSection
+        image={assetManifest.about.team}
+        alt="Bleacher frames on the manufacturing floor in Brooksville, Florida"
+        position="50% 40%"
+        tone="elev"
+        heading={{
+          kicker: "Headquarters",
+          title: (
+            <>
+              Brooksville, Florida<Dot />
+            </>
+          ),
+          lead: "Systems are engineered, manufactured, and serviced at our facility north of Tampa. Purchased systems ship nationwide.",
+        }}
+      >
         <Reveal delay={0.1}>
-          <div className="mono mt-8 border-t border-line pt-6 text-sm leading-relaxed text-fg">
+          <div className="mono border-t border-line pt-6 text-sm leading-relaxed text-fg lg:mt-8">
             {site.address.street}
             <br />
             {site.address.city}, {site.address.region} {site.address.postalCode}

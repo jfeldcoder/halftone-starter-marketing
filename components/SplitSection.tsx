@@ -51,14 +51,14 @@ export default function SplitSection({
           <Photo src={image} alt={alt} sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" style={{ objectPosition: position }} />
           {soft && (
             <>
-              <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-bg to-transparent lg:h-40" />
-              <div aria-hidden className={cn("pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-bg to-transparent lg:h-40", heading && "hidden lg:block")} />
+              <div aria-hidden className={cn("pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-bg to-transparent lg:h-40", heading && "hidden lg:block")} />
+              <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-bg to-transparent lg:h-40" />
             </>
           )}
           {heading && (
-            <div className="absolute inset-x-0 bottom-0 lg:hidden">
-              <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-scrim/90 via-scrim/55 to-transparent" />
-              <Reveal className="relative px-gutter pb-8 pt-24">
+            <div className="absolute inset-x-0 top-0 lg:hidden">
+              <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-scrim/90 via-scrim/55 to-transparent" />
+              <Reveal className="relative px-gutter pb-24 pt-8">
                 {heading.kicker && <p className="kicker text-accent">{heading.kicker}</p>}
                 <h2 className="type-display mt-3 text-[clamp(1.9rem,8vw,3rem)] text-white">{heading.title}</h2>
                 {heading.lead && <p className="mt-4 max-w-md text-[0.95rem] leading-relaxed text-white/80">{heading.lead}</p>}
