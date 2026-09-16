@@ -29,8 +29,8 @@ export default function Nav() {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,border-color] duration-300",
-        scrolled || open ? "border-b border-line bg-bg/85 shadow-[0_10px_40px_-30px_rgb(23_20_17/0.4)] backdrop-blur-md" : "border-b border-transparent bg-transparent",
+        "on-ink fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-ink text-white transition-shadow duration-300",
+        scrolled && !open && "shadow-[0_10px_40px_-25px_rgb(0_0_0/0.6)]",
       )}
     >
       <div className="container-page flex h-[72px] items-center justify-between">
@@ -45,7 +45,7 @@ export default function Nav() {
                   href={l.href}
                   className={cn(
                     "relative flex items-center gap-1 rounded-full px-4 py-2 text-sm font-medium transition-colors",
-                    isActive(l.href) ? "text-fg" : "text-fg-muted hover:text-fg",
+                    isActive(l.href) ? "text-white" : "text-white/65 hover:text-white",
                   )}
                 >
                   {l.label}
@@ -68,16 +68,16 @@ export default function Nav() {
                       transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
                       className="absolute left-0 top-full w-72 pt-3"
                     >
-                      <div className="card overflow-hidden p-2 shadow-[0_30px_60px_-30px_rgb(23_20_17/0.35)]">
+                      <div className="overflow-hidden rounded-2xl border border-white/10 bg-ink-elev p-2 shadow-[0_30px_60px_-30px_rgb(0_0_0/0.8)]">
                         {l.children!.map((c) => (
                           <Link
                             key={c.href}
                             href={c.href}
                             onClick={() => setMenu(null)}
-                            className="group flex flex-col rounded-xl px-3 py-2.5 transition-colors hover:bg-bg-elev"
+                            className="group flex flex-col rounded-xl px-3 py-2.5 transition-colors hover:bg-white/5"
                           >
-                            <span className="text-sm font-semibold text-fg group-hover:text-accent-dark">{c.label}</span>
-                            <span className="text-xs text-fg-faint">{c.note}</span>
+                            <span className="text-sm font-semibold text-white group-hover:text-accent">{c.label}</span>
+                            <span className="text-xs text-white/45">{c.note}</span>
                           </Link>
                         ))}
                       </div>
@@ -99,11 +99,11 @@ export default function Nav() {
           className="relative h-10 w-10 md:hidden"
         >
           <span
-            className="absolute left-1/2 top-1/2 h-0.5 w-6 -translate-x-1/2 bg-fg transition-transform duration-300"
+            className="absolute left-1/2 top-1/2 h-0.5 w-6 -translate-x-1/2 bg-white transition-transform duration-300"
             style={{ transform: open ? "translate(-50%,-50%) rotate(45deg)" : "translate(-50%,-6px)" }}
           />
           <span
-            className="absolute left-1/2 top-1/2 h-0.5 w-6 -translate-x-1/2 bg-fg transition-transform duration-300"
+            className="absolute left-1/2 top-1/2 h-0.5 w-6 -translate-x-1/2 bg-white transition-transform duration-300"
             style={{ transform: open ? "translate(-50%,-50%) rotate(-45deg)" : "translate(-50%,4px)" }}
           />
         </button>
@@ -116,7 +116,7 @@ export default function Nav() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="absolute inset-x-0 top-full h-[calc(100dvh-72px)] overflow-y-auto border-t border-line bg-bg md:hidden"
+            className="absolute inset-x-0 top-full h-[calc(100dvh-72px)] overflow-y-auto border-t border-white/10 bg-ink md:hidden"
           >
             <div className="container-page flex flex-col gap-1 py-6">
               {site.nav.flatMap((l, i) => {
@@ -131,7 +131,7 @@ export default function Nav() {
                     <Link
                       href={c.href}
                       onClick={() => setOpen(false)}
-                      className="display flex items-center justify-between border-b border-line py-4 text-2xl font-extrabold text-fg"
+                      className="display flex items-center justify-between border-b border-white/10 py-4 text-2xl font-extrabold text-white"
                     >
                       {c.label}
                       <span className="text-accent">→</span>
@@ -142,7 +142,7 @@ export default function Nav() {
               <Link href={site.cta.href} onClick={() => setOpen(false)} className="btn btn-primary mt-6 w-full">
                 {site.cta.label}
               </Link>
-              <a href={site.phoneHref} className="mt-4 text-center text-sm text-fg-muted">
+              <a href={site.phoneHref} className="mt-4 text-center text-sm text-white/60">
                 Call {site.phone}
               </a>
             </div>
