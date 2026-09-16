@@ -1,13 +1,21 @@
 import Photo from "@/components/Photo";
+import Reveal from "@/components/Reveal";
 import { cn } from "@/lib/cn";
+
+type Heading = { kicker?: string; title: React.ReactNode; lead?: string };
 
 /**
  * Two columns: the photo runs to the outer edge and the full section height,
  * copy sits in the other column. `flip` puts the photo on the right.
+ *
+ * With `heading`, phones show the kicker, title, and lead overlaid on the
+ * photo and the rest (children) underneath; desktop keeps everything in the
+ * copy column.
  */
 export default function SplitSection({
   image,
   alt,
+  heading,
   children,
   flip = false,
   tone = "light",
@@ -18,6 +26,7 @@ export default function SplitSection({
 }: {
   image: string;
   alt: string;
+  heading?: Heading;
   children: React.ReactNode;
   flip?: boolean;
   tone?: "light" | "elev" | "ink";
@@ -27,26 +36,46 @@ export default function SplitSection({
   /** No rules; the photo fades in from the page color at its top and bottom. */
   soft?: boolean;
 }) {
+  const dark = tone === "ink";
   return (
     <section
       id={id}
       className={cn(
         soft ? "" : noTopRule ? "border-b border-line" : "border-y border-line",
         tone === "elev" && "bg-bg-elev",
-        tone === "ink" && "on-ink border-white/10 bg-ink text-white",
+        dark && "on-ink border-white/10 bg-ink text-white",
       )}
     >
-      <div className={cn("mx-auto grid max-w-content lg:grid-cols-2", flip ? "lg:grid-cols-[1fr_1fr]" : "")}>
-        <div className={cn("relative aspect-[4/3] overflow-hidden bg-surface lg:aspect-auto lg:min-h-[640px]", flip ? "lg:order-2" : "lg:order-1")}>
+      <div className="mx-auto grid max-w-content lg:grid-cols-2">
+        <div className={cn("relative overflow-hidden bg-surface lg:aspect-auto lg:min-h-[640px]", heading ? "aspect-[4/5] sm:aspect-[4/3]" : "aspect-[4/3]", flip ? "lg:order-2" : "lg:order-1")}>
           <Photo src={image} alt={alt} sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" style={{ objectPosition: position }} />
           {soft && (
             <>
               <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-bg to-transparent lg:h-40" />
-              <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-bg to-transparent lg:h-40" />
+              <div aria-hidden className={cn("pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-bg to-transparent lg:h-40", heading && "hidden lg:block")} />
             </>
           )}
+          {heading && (
+            <div className="absolute inset-x-0 bottom-0 lg:hidden">
+              <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-scrim/90 via-scrim/55 to-transparent" />
+              <Reveal className="relative px-gutter pb-8 pt-24">
+                {heading.kicker && <p className="kicker text-accent">{heading.kicker}</p>}
+                <h2 className="type-display mt-3 text-[clamp(1.9rem,8vw,3rem)] text-white">{heading.title}</h2>
+                {heading.lead && <p className="mt-4 max-w-md text-[0.95rem] leading-relaxed text-white/80">{heading.lead}</p>}
+              </Reveal>
+            </div>
+          )}
         </div>
-        <div className={cn("flex flex-col justify-center px-gutter py-14 lg:px-14 lg:py-24", flip ? "lg:order-1" : "lg:order-2")}>{children}</div>
+        <div className={cn("flex flex-col justify-center px-gutter py-10 lg:px-14 lg:py-24", flip ? "lg:order-1" : "lg:order-2")}>
+          {heading && (
+            <Reveal className="hidden lg:block">
+              {heading.kicker && <p className={cn("kicker", dark ? "text-accent" : "text-accent-dark")}>{heading.kicker}</p>}
+              <h2 className={cn("type-display mt-4 text-[clamp(1.9rem,3.8vw,3.2rem)]", dark ? "text-white" : "text-fg")}>{heading.title}</h2>
+              {heading.lead && <p className={cn("mt-6 max-w-md text-[0.98rem] leading-relaxed", dark ? "text-white/65" : "text-fg-muted")}>{heading.lead}</p>}
+            </Reveal>
+          )}
+          {children}
+        </div>
       </div>
     </section>
   );
