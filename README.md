@@ -1,4 +1,4 @@
-# EventPro Seating — website redesign
+# EventPro Seating — website
 
 Pitch build for [eventproseating.com](https://eventproseating.com): Next.js 16 + Tailwind v4 +
 framer-motion, deploy-ready on Vercel.
