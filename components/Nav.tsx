@@ -19,7 +19,11 @@ export default function Nav() {
   const [drop, setDrop] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    // Over a pinned scroll hero, stay transparent until the hero has played out.
+    const onScroll = () => {
+      const hero = document.querySelector("[data-scroll-hero]");
+      setScrolled(hero ? hero.getBoundingClientRect().bottom < 96 : window.scrollY > 24);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);

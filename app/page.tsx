@@ -1,5 +1,7 @@
 import Link from "next/link";
-import Hero from "@/components/Hero";
+// The original photo hero: swap back to <Hero image={resolveAsset(assetManifest.home.heroAlt)} /> to restore it.
+// import Hero from "@/components/Hero";
+import ScrollDeployHero from "@/components/ScrollDeployHero";
 import Reveal, { Ticker } from "@/components/Reveal";
 import SectionHeading, { Dot } from "@/components/SectionHeading";
 import ProductTile from "@/components/ProductTile";
@@ -43,7 +45,7 @@ export default function Home() {
 
   return (
     <>
-      <Hero image={resolveAsset(assetManifest.home.heroAlt)} />
+      <ScrollDeployHero />
 
       <Ticker items={USE_CASES} />
 
